@@ -206,7 +206,7 @@ class Text_Wiki_Render {
     *
     * @access public
     * @param string $text the text to render
-    * @return rendered text
+    * @return string rendered text
     *
     */
 

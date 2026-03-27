@@ -135,7 +135,7 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
         $tmp_regex = "/(^|[^{$either}\-_]){$this->regex}/".($this->getConf('utf-8') ? 'u' : '');
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'process'),
+			[&$this, 'process' ],
             $this->wiki->source
         );
     }
@@ -149,7 +149,7 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     *
     * @param array &$matches The array of matches from parse().
     *
-    * @return A delimited token to be used as a placeholder in
+    * @return string A delimited token to be used as a placeholder in
     * the source text, plus any text priot to the match.
     *
     */
@@ -157,11 +157,11 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     function processDescr(&$matches)
     {
         // set the options
-        $options = array(
-            'page'   => $matches[1],
-            'text'   => $matches[5],
-            'anchor' => $matches[3]
-        );
+        $options = [
+			'page'   => $matches[1],
+			'text'   => $matches[5],
+			'anchor' => $matches[3],
+		];
 
         // create and return the replacement token and preceding text
         return $this->wiki->addToken($this->rule, $options); // . $matches[7];
@@ -177,7 +177,7 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     *
     * @param array &$matches The array of matches from parse().
     *
-    * @return A delimited token to be used as a placeholder in
+    * @return string A delimited token to be used as a placeholder in
     * the source text, plus any text prior to the match.
     *
     */
@@ -186,19 +186,18 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     {
         // when prefixed with !, it's explicitly not a wiki link.
         // return everything as it was.
-        if ($matches[2]{0} == '!') {
+        if ($matches[2][0] == '!') {
             return $matches[1] . substr($matches[2], 1) . $matches[3];
         }
 
         // set the options
-        $options = array(
-            'page' => $matches[2],
-            'text' => $matches[2] . $matches[3],
-            'anchor' => $matches[3]
-        );
+        $options = [
+			'page'   => $matches[2],
+			'text'   => $matches[2] . $matches[3],
+			'anchor' => $matches[3],
+		];
 
         // create and return the replacement token and preceding text
         return $matches[1] . $this->wiki->addToken($this->rule, $options);
     }
 }
-?>
