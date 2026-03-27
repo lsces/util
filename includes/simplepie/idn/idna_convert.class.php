@@ -60,7 +60,7 @@ class idna_convert
      * @var array
      * @access private
      */
-    var $NP = array();
+    var $NP = [];
 
     // Internal settings, do not mess with them
     var $_punycode_prefix = 'xn--';
@@ -344,7 +344,6 @@ class idna_convert
 
     /**
      * Use this method to get the last error ocurred
-     * @param    void
      * @return   string   The last error, that occured
      * @access   public
      */
@@ -374,7 +373,7 @@ class idna_convert
         $delim_pos = strrpos($encoded, '-');
         if ($delim_pos > strlen($this->_punycode_prefix)) {
             for ($k = strlen($this->_punycode_prefix); $k < $delim_pos; ++$k) {
-                $decoded[] = ord($encoded{$k});
+                $decoded[] = ord($encoded[$k]);
             }
         } else {
             $decoded = array();
@@ -390,7 +389,7 @@ class idna_convert
 
         for ($enco_idx = ($delim_pos) ? ($delim_pos + 1) : 0; $enco_idx < $enco_len; ++$deco_len) {
             for ($old_idx = $idx, $w = 1, $k = $this->_base; 1 ; $k += $this->_base) {
-                $digit = $this->_decode_digit($encoded{$enco_idx++});
+                $digit = $this->_decode_digit($encoded[$enco_idx++]);
                 $idx += $digit * $w;
                 $t = ($k <= $bias) ? $this->_tmin :
                         (($k >= $bias + $this->_tmax) ? $this->_tmax : ($k - $bias));
@@ -745,7 +744,7 @@ class idna_convert
     /**
      * Do composition of a sequence of starter and non-starter
      * @param    array      UCS4 Decomposed sequence
-     * @return   array      Ordered USC4 sequence
+     * @return   array|bool      Ordered USC4 sequence
      * @access   private
      */
     function _combine($input)
@@ -793,7 +792,7 @@ class idna_convert
         $mode = 'next';
         $test = 'none';
         for ($k = 0; $k < $inp_len; ++$k) {
-            $v = ord($input{$k}); // Extract byte from input string
+            $v = ord($input[$k]); // Extract byte from input string
 
             if ($v < 128) { // We found an ASCII char - put into stirng as is
                 $output[$out_len] = $v;
@@ -917,7 +916,7 @@ class idna_convert
       */
     function _ucs4_string_to_ucs4($input)
     {
-        $output = array();
+        $output = [];
         $inp_len = strlen($input);
         // Input length must be dividable by 4
         if ($inp_len % 4) {
@@ -932,7 +931,7 @@ class idna_convert
                 $out_len++;
                 $output[$out_len] = 0;
             }
-            $output[$out_len] += ord($input{$i}) << (8 * (3 - ($i % 4) ) );
+            $output[$out_len] += ord($input[$i]) << (8 * (3 - ($i % 4) ) );
         }
         return $output;
     }
@@ -965,5 +964,3 @@ class Net_IDNA_php4 extends idna_convert
         return $this->IC->set_parameters($option, $param);
     }
 }
-
-?>
