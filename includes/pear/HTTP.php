@@ -471,38 +471,30 @@ location.replace("'.str_replace('"', '\\"', $url).'");
         }
 
         if (empty($protocol)) {
-            if (isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'], 'on')) {
-                $protocol = 'https';
-            } else {
-                $protocol = 'http';
-            }
-            if (!isset($port) || $port != intval($port)) {
-                $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
-            }
-        }
+			$protocol = ( isset( $_SERVER['HTTPS'] ) && !strcasecmp( $_SERVER['HTTPS'], 'on' ) ) ? 'https' : 'http';
+			if (!isset( $port ) || $port != intval( $port )) {
+				$port = isset( $_SERVER['SERVER_PORT'] ) ? $_SERVER['SERVER_PORT'] : 80;
+			}
+		}
 
-        if ($protocol == 'http' && $port == 80) {
-            unset($port);
-        }
-        if ($protocol == 'https' && $port == 443) {
-            unset($port);
-        }
+		if ($protocol == 'http' && $port == 80) {
+			unset( $port );
+		}
+		if ($protocol == 'https' && $port == 443) {
+			unset( $port );
+		}
 
-        $server = $protocol.'://'.$host.(isset($port) ? ':'.$port : '');
+		$server = $protocol . '://' . $host . ( isset( $port ) ? ':' . $port : '' );
 
-        $uriAll = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI']
-                                                 : $_SERVER['PHP_SELF'];
-        if (false !== ($q = strpos($uriAll, '?'))) {
-            $uriBase = substr($uriAll, 0, $q);
-        } else {
-            $uriBase = $uriAll;
-        }
-        if (!strlen($url) || $url{0} == '#') {
-            $url = $uriAll.$url;
-        } elseif ($url{0} == '?') {
+		$uriAll = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI']
+			: $_SERVER['PHP_SELF'];
+		$uriBase = ( false !== ( $q = strpos( $uriAll, '?' ) ) ) ? substr( $uriAll, 0, $q ) : $uriAll;
+		if (!strlen( $url ) || $url[0] == '#') {
+			$url = $uriAll . $url;
+		} elseif ($url[0] == '?') {
             $url = $uriBase.$url;
         }
-        if ($url{0} == '/') {
+        if ($url[0] == '/') {
             return $server . $url;
         }
 
@@ -545,4 +537,3 @@ location.replace("'.str_replace('"', '\\"', $url).'");
     }
 }
 
-?>

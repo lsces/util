@@ -247,9 +247,9 @@ class HTTP_Download
      *
      * @see HTTP_Download::setContentDisposition()
      */
-    function HTTP_Download($params = array())
+    function HTTP_Download($params = [])
     {
-        $this->HTTP = &new HTTP_Header;
+        $this->HTTP = new HTTP_Header;
         $this->_error = $this->setParams($params);
     }
     // }}}
@@ -763,7 +763,7 @@ class HTTP_Download
      */
     function staticSend($params, $guess = false)
     {
-        $d = &new HTTP_Download();
+        $d = new HTTP_Download();
         $e = $d->setParams($params);
         if (PEAR::isError($e)) {
             return $e;

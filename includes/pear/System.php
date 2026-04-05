@@ -9,7 +9,6 @@
  * @author     Tomas V.V.Cox <cox@idecnet.com>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id$
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
  */
@@ -23,7 +22,7 @@ require_once 'Console/Getopt.php';
 $GLOBALS['_System_temp_files'] = array();
 
 /**
-* System offers cross plattform compatible system functions
+* System offers cross platform compatible system functions
 *
 * Static functions for different operations. Should work under
 * Unix and Windows. The names and usage has been taken from its respectively
@@ -51,7 +50,7 @@ $GLOBALS['_System_temp_files'] = array();
 * @author     Tomas V.V. Cox <cox@idecnet.com>
 * @copyright  1997-2006 The PHP Group
 * @license    http://opensource.org/licenses/bsd-license.php New BSD License
-* @version    Release: @package_version@
+* @version    Release: 1.10.16
 * @link       http://pear.php.net/package/PEAR
 * @since      Class available since Release 0.1
 * @static
@@ -75,7 +74,7 @@ class System
             $offset = 0;
             foreach ($av as $a) {
                 $b = trim($a[0]);
-                if ($b{0} == '"' || $b{0} == "'") {
+                if ($b[0] == '"' || $b[0] == "'") {
                     continue;
                 }
 
@@ -96,6 +95,7 @@ class System
                 $argv[$k] = trim($a) ;
             }
         }
+
         return Console_Getopt::getopt2($argv, $short_options, $long_options);
     }
 
@@ -106,7 +106,7 @@ class System
      * @param mixed $error a PEAR error or a string with the error message
      * @return bool false
      */
-    public static function raiseError($error)
+    protected static function raiseError($error)
     {
         if (PEAR::isError($error)) {
             $error = $error->getMessage();
@@ -138,7 +138,7 @@ class System
      * @param    bool    $silent     if true, do not emit errors.
      * @return   array   the structure of the dir
      */
-    public static function _dirToStruct($sPath, $maxinst, $aktinst = 0, $silent = false)
+    protected static function _dirToStruct($sPath, $maxinst, $aktinst = 0, $silent = false)
     {
         $struct = array('dirs' => array(), 'files' => array());
         if (($dir = @opendir($sPath)) === false) {
@@ -178,9 +178,10 @@ class System
      *
      * @param    array $files Array listing files and dirs
      * @return   array
+     * @static
      * @see System::_dirToStruct()
      */
-    public static function _multipleToStruct($files)
+    protected static function _multipleToStruct($files)
     {
         $struct = array('dirs' => array(), 'files' => array());
         settype($files, 'array');
@@ -203,6 +204,8 @@ class System
      *
      * @param    string  $args   the arguments for rm
      * @return   mixed   PEAR_Error or true for success
+     * @static
+     * @access   public
      */
     public static function rm($args)
     {
@@ -262,7 +265,7 @@ class System
             } elseif ($opt[0] == 'm') {
                 // if the mode is clearly an octal number (starts with 0)
                 // convert it to decimal
-                if (strlen($opt[1]) && $opt[1]{0} == '0') {
+                if (strlen($opt[1]) && $opt[1][0] == '0') {
                     $opt[1] = octdec($opt[1]);
                 } else {
                     // convert to int
@@ -312,7 +315,7 @@ class System
      * 2) System::cat('sample.txt test.txt > final.txt');
      * 3) System::cat('sample.txt test.txt >> final.txt');
      *
-     * Note: as the class use fopen, urls should work also (test that)
+     * Note: as the class use fopen, urls should work also
      *
      * @param    string  $args   the arguments
      * @return   boolean true on success
@@ -477,7 +480,7 @@ class System
         if ($var = isset($_ENV['TMPDIR']) ? $_ENV['TMPDIR'] : getenv('TMPDIR')) {
             return $var;
         }
-        return realpath('/tmp');
+        return realpath(function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : '/tmp');
     }
 
     /**
@@ -501,13 +504,11 @@ class System
             $path_elements[] = dirname($program);
             $program = basename($program);
         } else {
-            // Honor safe mode
-            if (!ini_get('safe_mode') || !$path = ini_get('safe_mode_exec_dir')) {
-                $path = getenv('PATH');
-                if (!$path) {
-                    $path = getenv('Path'); // some OSes are just stupid enough to do this
-                }
+            $path = getenv('PATH');
+            if (!$path) {
+                $path = getenv('Path'); // some OSes are just stupid enough to do this
             }
+
             $path_elements = explode(PATH_SEPARATOR, $path);
         }
 
@@ -519,18 +520,23 @@ class System
             if (strpos($program, '.') !== false) {
                 array_unshift($exe_suffixes, '');
             }
-            // is_executable() is not available on windows for PHP4
-            $pear_is_executable = (function_exists('is_executable')) ? 'is_executable' : 'is_file';
         } else {
             $exe_suffixes = array('');
-            $pear_is_executable = 'is_executable';
         }
 
         foreach ($exe_suffixes as $suff) {
             foreach ($path_elements as $dir) {
                 $file = $dir . DIRECTORY_SEPARATOR . $program . $suff;
-                if (@$pear_is_executable($file)) {
-                    return $file;
+                // It's possible to run a .bat on Windows that is_executable
+                // would return false for. The is_executable check is meaningless...
+                if (OS_WINDOWS) {
+                    if (file_exists($file)) {
+                        return $file;
+                    }
+                } else {
+                    if (is_executable($file)) {
+                        return $file;
+                    }
                 }
             }
         }
@@ -549,7 +555,7 @@ class System
      * System::find("$dir -name *.php -name *.htm*");
      * System::find("$dir -maxdepth 1");
      *
-     * Params implmented:
+     * Params implemented:
      * $dir            -> Start the search at this directory
      * -type d         -> return only directories
      * -type f         -> return only files
