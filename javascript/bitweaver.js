@@ -8,7 +8,7 @@
 // if you are adding new features to this file add them to the BitBase object.
 BitBase = {
     // windowCenter and windowSize hacked based on http://www.demtron.com/blog/post/2009/01/14/Centering-a-DIV-Window-with-Cross-Browser-JavaScript.aspx
-    "windowSize" : function()
+    windowSize : function()
     {
 		var w = 0;
 		var h = 0;
@@ -37,7 +37,7 @@ BitBase = {
 		return {width:w,height:h};
     },
     
-    "windowCenter" : function(hWnd)
+    windowCenter : function(hWnd)
     {
 		var _x = 0;
 		var _y = 0;
@@ -74,11 +74,11 @@ BitBase = {
 	// constants
 	// DATE - set in init()
 	// newWindow used in closeWin()
-	"newWindow":null,
+	newWindow:null,
 
 	//-- initialization --//
 	// desc:		setup called at the end of this file
-	"init": function(){
+	init: function(){
 		var self = BitBase;
 		self.DATE = new Date();
 		var tz_offset = -(self.DATE.getTimezoneOffset() * 60);
@@ -87,12 +87,12 @@ BitBase = {
 		self.setCookie("javascript_enabled", "y");
 	},
 
-	"deprecatedFunc": function ( funcName ){
+	deprecatedFunc: function ( funcName ){
 		alert( 'Warning: Use of deprecated global function ' + funcName + ' use name space BitBase: BitBase.' + funcName )
 	},
 
 	// Adds a function to be called at page load time
-	"addLoadHook": function(func) {
+	addLoadHook: function(func) {
 		if ( typeof window.addEventListener != "undefined" ) {
 			window.addEventListener( "load", func, false );
 		} else if ( typeof window.attachEvent != "undefined" ) {
@@ -120,15 +120,15 @@ BitBase = {
 	//				[secure] (optional) = Boolean value indicating if the cookie transmission requires a secure transmission
 	// NOTE:	* an argument defaults when it is assigned null as a placeholder
 	// 			* a null placeholder is not required for trailing omitted arguments
-	"setCookie": function(name, value, expire, path, domain, secure) {
+	setCookie: function(name, value, expire, path, domain, secure) {
 		var self = BitBase;
 		var path = (path) ? path : bitCookiePath;
-		var domain = escape((domain) ? domain : bitCookieDomain);
+		var domain = encodeURIComponent((domain) ? domain : bitCookieDomain);
 		var cookie_path = ((path) ? "; path=" + path : "");
 		var cookie_domain = ((domain) ? "; domain=" + domain : "");
 		var cookie_expire = ((expire)?expire:((self.DATE) ? "; expires=" + self.DATE.toGMTString() : ""));
 		var cookie_secure =	((secure) ? "; secure" : "");
-		var curCookie = name + "=" + escape(value)
+		var curCookie = name + "=" + encodeURIComponent(value)
 				+ cookie_path
 				+ cookie_domain
 				+ cookie_expire
@@ -138,7 +138,7 @@ BitBase = {
 
 	// desc:		creates a cookie if required and sets the element in the array
 	// params: 		name - cookie name / key - in the cookie array / val - value to store
-	"setCookieArray": function(name, key, val){
+	setCookieArray: function(name, key, val){
 		var self = BitBase;
 		var curval = self.getCookie(name);
 		var newval;
@@ -155,7 +155,7 @@ BitBase = {
 
 	// desc:		Gets a Cookie and returns it's value
 	// params:		name = the name of the desired cookie
-	"getCookie": function(name) {
+	getCookie: function(name) {
 		var dc = document.cookie;
 		var prefix = name + "=";
 		var begin = dc.indexOf("; " + prefix);
@@ -172,7 +172,7 @@ BitBase = {
 
 	// desc:		Returns a value from a key stored in an array in a cookie.
 	// params: 		name - cookie name / key - in the cookie array
-	"getCookieArray": function(name, key) {
+	getCookieArray: function(name, key) {
 		var self = BitBase;
 		var curval = self.getCookie(name);
 		var val;
@@ -188,10 +188,10 @@ BitBase = {
 	//				[path] (optional) = the path of the cookie (must be same path used when created)
 	//				[domain] (optional) = the domain of the cookie (must be same domain used when created)
 	// NOTE:		path and domain default if assigned null or omitted if no explicit argument proceeds
-	"deleteCookie": function(name, path, domain) {
+	deleteCookie: function(name, path, domain) {
 		var self = BitBase;
 		var cookie_path = (path) ? path : bitCookiePath;
-		var cookie_domain = escape((domain) ? domain : bitCookieDomain);
+		var cookie_domain = encodeURIComponent((domain) ? domain : bitCookieDomain);
 		if (self.getCookie(name)) {
 			document.cookie = name + "="
 				+ "; path=" +  cookie_path + "; domain=" + cookie_domain + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
@@ -201,7 +201,7 @@ BitBase = {
 	//-- DOM coercion --//
 	// desc:		returns a dom element
 	// parms:		id - element id to look up or if id is an element it will be returned
-	"getElement": function(id){
+	getElement: function(id){
 		if(typeof(id) == "string"){
 			if(document.layers){
 				return document.layers[id];
@@ -216,7 +216,7 @@ BitBase = {
 
 	// desc:		sets display style
 	// params:		elm a DOM element or id / val the style value to toggle / useCookie to persist the setting
-	"setElementDisplay": function( elm, val, useCookie ){
+	setElementDisplay: function( elm, val, useCookie ){
 		var self = BitBase;
 		var obj = self.getElement( elm );
 		if( obj != null ){ obj.style.display=val; }
@@ -225,7 +225,7 @@ BitBase = {
 
 	// desc:		toggles an element's style between the value and none
 	// params:		elm a DOM element or id / val the style value to toggle / useCookie to persist the setting
-	"toggleElementDisplay": function( elm, val, useCookie ){
+	toggleElementDisplay: function( elm, val, useCookie ){
 		var self = BitBase;
 		var obj = self.getElement( elm );
 		if( typeof(val) == 'undefined' ) {
@@ -236,45 +236,20 @@ BitBase = {
 		return value != 'none';
 	},
 
-	/**
-	 * Hides all elements that have the specified class name
-	 * @param className The class name of the elements to hide
-	 */
-	"hideByClass": function( className ) {
-		var elements = document.getElementsByClassName(className);
-		for (var i = 0; i < elements.length; i++) {
-			elements[i].style.display = 'none';
-		}
-	},
-
-	/**
-	 * Shows all elements that have the specified class name
-	 * @param className The class name of the elements to show
-	 * @param displayType Optional: The display style to use (e.g., 'block', 'inline'). Defaults to '' (CSS default).
-	 */
-	"showByClass": function(className, displayType) {
-		var elements = document.getElementsByClassName(className);
-		// If displayType is not provided (undefined/null), it defaults to 'block'
-		var display = displayType || 'block'; 
-		for (var i = 0; i < elements.length; i++) {
-			elements[i].style.display = display;
-		}
-	},
-
 	// desc:		convenience
 	// params:		elm - ad DOM element or id / useCookie = any value (not 0 or null) to turn cookies on
-	"showById": function( elm, useCookie ) {
+	showById: function( elm, useCookie ) {
 		BitBase.setElementDisplay( elm, 'block', useCookie );
 	},
 
 	// desc:		convenience
 	// params:		elm - ad DOM element or id / useCookie = any value (not 0 or null) to turn cookies on
-	"hideById": function( elm, useCookie) {
+	hideById: function( elm, useCookie) {
 		BitBase.setElementDisplay( elm, 'none', useCookie );
 	},
 
 	// shows or hides based on the showhide cookie
-	"setupShowHide": function() {
+	setupShowHide: function() {
 		var self = BitBase;
 		var curval = self.getCookie('showhide');
 		if (curval != null) {
@@ -292,7 +267,7 @@ BitBase = {
 
 	// desc:		Toggles the visibility of dynamic variable passed to it
 	// params:		name
-	"toggleDynamicVar": function(name) {
+	toggleDynamicVar: function(name) {
 		var self = BitBase;
 		var elm1 = self.getElement('dyn_'+name+'_display');
 		var elm2 = self.getElement('dyn_'+name+'_edit');
@@ -306,7 +281,7 @@ BitBase = {
 	},
 
 	// desc:		convenience
-	"showSpinner": function() {
+	showSpinner: function() {
 		// Center the spinner
 		div = document.getElementById( 'spinner' );
 		w = div.style.width.replace(/[a-z]/gi, '');
@@ -320,13 +295,13 @@ BitBase = {
 	},
 
 	// desc:		convenience
-	"hideSpinner": function() {
+	hideSpinner: function() {
 		BitBase.setElementDisplay( 'spinner','none' );
 		BitBase.setElementDisplay( 'spinner_overlay','none' );
 	},
 
 	// desc:		No Idea - used by insertAt
-	"setSelectionRange": function(textarea, selectionStart, selectionEnd) {
+	setSelectionRange: function(textarea, selectionStart, selectionEnd) {
 		if (textarea.setSelectionRange) {
 			textarea.focus();
 			textarea.setSelectionRange(selectionStart, selectionEnd);
@@ -340,13 +315,13 @@ BitBase = {
 	},
 
 	// desc:		No Idea - used by insertAt
-	"setCaretToPos": function(textarea, pos) {
+	setCaretToPos: function(textarea, pos) {
 		BitBase.setSelectionRange(textarea, pos, pos);
 	},
 
 	// desc:		inserts replaceString in elementId - used by QuickTags & Plugin Help
 	// params:		elementId = a HTML Id / replaceString = string
-	"insertAt": function(elementId, replaceString) {
+	insertAt: function(elementId, replaceString) {
 		var self = BitBase;
 		//inserts given text at selection or cursor position
 		//substrings in replaceString to be replaced by the selection if a selection was done
@@ -440,8 +415,8 @@ BitBase = {
 	//				zen = a number (1-3/def=1) allows multiple routines to use the function at the same time. Stores the
 	//				text portion of the window Id (elementIdStart) in an array so that it can be hidden later.
 	// Only the header portion of the id is saved
-	"flipArr":[0,0,0],
-	"flipMulti": function(elementIdStart,elementIdNum,elements,zen){
+	flipArr:[0,0,0],
+	flipMulti: function(elementIdStart,elementIdNum,elements,zen){
 		var self = BitBase;
 		if(elementIdStart && elementIdNum) {
 			if(arguments.length<1) elementIdNum=1;
@@ -466,7 +441,7 @@ BitBase = {
 
 	// desc:		Toggles a HTML elements visibility with an Icon. Use Cookies to make it stay that way.
 	// params:		elementId is an HTML Id for the window to be displayed/hidden
-	"flipIcon": function(elementId) {
+	flipIcon: function(elementId) {
 		var self = BitBase;
 		var pic = new Image();
 		if (elementId && document.getElementById(elementId).style && document.getElementById(elementId).style.display && document.getElementById(elementId).style.display == "none") {
@@ -481,7 +456,7 @@ BitBase = {
 
 	// desc:		Toggles the state of a flipped List after page reload
 	// params:		foo = a HTML Id of a List
-	"setFlipIcon": function(elementId) {
+	setFlipIcon: function(elementId) {
 		var self = BitBase;
 		var pic = new Image();
 		if (self.getCookie(elementId) == "o") {
@@ -496,7 +471,7 @@ BitBase = {
 
 	// desc:		Used to Expand/Collapse Lists
 	// params:		elementId = a HTML Id
-	"flipWithSign": function(elementId,cookie) {
+	flipWithSign: function(elementId,cookie) {
 		var self = BitBase;
 		if( flipperEle = document.getElementById( "flipper"+elementId ) ) {
 			if (document.getElementById(elementId).style.display == "none") {
@@ -511,7 +486,7 @@ BitBase = {
 
 	// desc:		Toggles the state of a flipped List after page reload
 	// params:		elementId = a HTML Id of a List
-	"setFlipWithSign": function(elementId) {
+	setFlipWithSign: function(elementId) {
 		var self = BitBase;
 		if( flipperEle = document.getElementById( "flipper"+elementId ) ) {
 			if (self.getCookie(elementId) == "o") {
@@ -526,7 +501,7 @@ BitBase = {
 
 	// desc:		Simple fade in/out of element based on http://www.switchonthecode.com/tutorials/javascript-tutorial-simple-fade-animation
 	// params:		elementId = a HTML Id, fadeTime = millisecond to fade out
-	"fade": function(elementId,fadeTime,direction) {
+	fade: function(elementId,fadeTime,direction) {
 		var element = document.getElementById(elementId);
 		if(element) {
 			if( fadeTime==null ) {
@@ -551,7 +526,7 @@ BitBase = {
 		}
 	},
 
-	"animateFade": function(lastTick, elementId,fadeTime) {  
+	animateFade: function(lastTick, elementId,fadeTime) {  
 		var curTick = new Date().getTime();
 		var elapsedTicks = curTick - lastTick;
 		var element = document.getElementById(elementId);
@@ -595,7 +570,7 @@ BitBase = {
 	Please do not remove or edit this message
 	Please link to this website if you use this script!
 	*/
-	"getElementValue": function(elm){
+	getElementValue: function(elm){
 		if(formElement = BitBase.getElement(elm)) {
 			if(formElement.length != null) {
 				var type = formElement[0].type;
@@ -639,7 +614,7 @@ BitBase = {
 	Please do not remove or edit this message
 	Please link to this website if you use this script!
 	*/
-	"setElementValue": function(elm, value){
+	setElementValue: function(elm, value){
 		if(formElement = BitBase.getElement(elm)) {
 			switch(formElement.type)
 			{
@@ -665,7 +640,7 @@ BitBase = {
 	//				switcher_name = UNKNOWN
 	// NOTE:		checkboxes need to have the same name as elements_name
 	// Example:	<input type="checkbox" name="my_ename[]">, will arrive as Array in php.
-	"switchCheckboxes": function(the_form, elements_name, switcher_name) {
+	switchCheckboxes: function(the_form, elements_name, switcher_name) {
 		var elements = document.getElementById(the_form).elements[elements_name];
 		var elements_cnt = ( typeof (elements.length) != 'undefined') ? elements.length : 0;
 
@@ -682,7 +657,7 @@ BitBase = {
 	// desc:		disable form stuff after submission
 	// params:		id = a HTML Id
 	// note:		a button you disable with this function will not appear in $_REQUEST
-	"disableSubmit": function(id) {
+	disableSubmit: function(id) {
 		if(document.getElementById) {
 			// this is the way the standards work
 			document.getElementById(id).disabled = true;
@@ -701,7 +676,7 @@ BitBase = {
 	// Example:	<select name="anything" onchange="go(this);">
 	//			<option value="http://bitweaver.org">bitweaver.org</option>
 	// 			</select>
-	"go": function(o) {
+	go: function(o) {
 		if (o.options[o.selectedIndex].value != "") {
 			location = o.options[o.selectedIndex].value;
 		}
@@ -710,7 +685,7 @@ BitBase = {
 
 	// desc:		Closes the window stored in newWindow - used by popUpWin
 	// params:		None
-	"closeWin": function(){
+	closeWin: function(){
 		var self = BitBase;
 		if (self.newWindow != null)
 			if(!self.newWindow.closed) self.newWindow.close();
@@ -723,7 +698,7 @@ BitBase = {
 	//				strWidth:	width of the window
 	//				strHeight:	height of the spawned window
 	// usage:		<a href="<URL>" title="{tr}Opens link in new window{/tr}" onkeypress="popUpWin(this.href,'standard',600,400);" onclick="popUpWin(this.href,'standard',600,400);return false;">{tr}FooBar{/tr}</a>
-	"popUpWin": function(url, type, strWidth, strHeight) {
+	popUpWin: function(url, type, strWidth, strHeight) {
 		var self = BitBase;
 		self.closeWin();
 		if (type == "fullScreen") {
@@ -748,7 +723,7 @@ BitBase = {
 	// Interfaces:
 	// utf8 = utf16to8(utf16);
 	// utf16 = utf16to8(utf8);
-	"utf16to8": function(str) {
+	utf16to8: function(str) {
 		var out, i, len, c;
 
 		out = "";
@@ -769,7 +744,7 @@ BitBase = {
 		return out;
 	},
 
-	"utf8to16": function(str) {
+	utf8to16: function(str) {
 		var out, i, len, c;
 		var char2, char3;
 
@@ -817,7 +792,7 @@ BitBase = {
 	// This library is free.  You can redistribute it and/or modify it.
 	// http://www.coolcode.cn/?p=171
 
-	"serialize": function(o) {
+	serialize: function(o) {
 		var self = BitBase;
 		var p = 0, sb = [], ht = [], hv = 1;
 		var classname = function(o) {
@@ -985,7 +960,7 @@ BitBase = {
 		 return sb.join('');
 	 },
 
-	 "unserialize": function(ss) {
+	 unserialize: function(ss) {
 		 var self = BitBase;
 		 var p = 0, ht = [], hv = 1; r = null;
 		 var unser_null = function() {
@@ -1132,7 +1107,7 @@ BitBase = {
 	// end swipe
 
 	// params:		w1 / w2 / w3
-	"genPass": function(w1, w2, w3) {
+	genPass: function(w1, w2, w3) {
 		var vo = "aeiouAEU";
 		var co = "bcdfgjklmnprstvwxzBCDFGHJKMNPQRSTVWXYZ0123456789#";
 		var s = Math.round(Math.random());
@@ -1175,7 +1150,7 @@ BitBase = {
 	 * };
 	 *
 	 **/
-	"SimpleAjax": function() {
+	SimpleAjax: function() {
 		var xmlhttp, bComplete = false;
 		try {
 			xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
@@ -1218,14 +1193,14 @@ BitBase = {
 		return this;
 	},
 
-    "evalJSON": function ( j ) {
+    evalJSON: function ( j ) {
        	return eval("(" + j + ")");
     },
 
 	/**
 	 *     Extremely lightweight fixIEDropMenu function to support css drop menus for all browsers without need for 30K of fixes/ie7.js
 	 **/
-	"fixIEDropMenu": function( pMenuId ) {
+	fixIEDropMenu: function( pMenuId ) {
 		if(document.getElementById(pMenuId)){
 			var menuItems = document.getElementById(pMenuId).getElementsByTagName("LI");
 			for( var i=0; i< menuItems.length; i++ ) {
@@ -1244,7 +1219,7 @@ BitBase = {
 	/**
 	 * This mess right here ads an iframe behind any element you need to float over selects in that POS IE6
 	 **/
-	"bgIframe": function(e, s) {
+	bgIframe: function(e, s) {
 		/* This is only for IE6 */
 		if( document.all && (navigator.userAgent.toLowerCase().indexOf("msie 6.") != -1) ){
 			/* @TODO enable override of params */
@@ -1277,7 +1252,7 @@ BitBase = {
 	 * It's use is strongly discouraged, particularly in distro'ed packages
 	 **/
 
-	"$": function() {
+	$: function() {
 		var elements = new Array();
 		for (var i = 0; i < arguments.length; i++) {
 			var element = arguments[i];
@@ -1288,192 +1263,61 @@ BitBase = {
 			elements.push(element);
 		}
 		return elements;
-	}
+	},
 
+	// NOTICE: this only appears to be used in quicktags - put it there
+	// function:	textareasize
+	// desc:		Modifies the dimensions of a textarea
+	// date:		Pre-bitweaver
+	// params:		elementId = a HTML Id to a textarea
+	//				height = nb pixels to add to the height (the number can be negative)
+	//				width = nb pixels to add to the width
+	//				formid = a HTML Id to form - see Note:
+	// Note:		* The form must have 2 input rows and cols
+	textareasize: function(elementId, height) {
+		textarea = document.getElementById( elementId );
+		if (textarea && height != 0 && textarea.rows + height > 5) {
+			textarea.rows += height;
+			BitBase.setCookie('rows', textarea.rows);
+		}
+	},
+
+
+	parseQueryString: function(queryString) {
+		var data = {};
+		var pairs = queryString.split('&');
+		for (var i = 0; i < pairs.length; i++) {
+			var pair = pairs[i].split('=');
+			data[pair[0]] = pair[1];
+		}
+	return data;
+	},
+
+	updater: function(target, url, queryString) {
+		BitBase.showSpinner();
+		var data = BitBase.parseQueryString(queryString);
+		$.ajax({
+			type: 'GET',
+			url: url,
+			data: data,
+			async: true,
+			success: function(html) {
+				// create a placeholder element if it doesn't exist
+				if (!$('#' + target).length) {
+					$('<div id="' + target + '"></div>').appendTo('body');
+				}
+				// update the placeholder element with the HTML content
+				$('#' + target).html(html);
+				BitBase.hideSpinner();
+			},
+			error: function(xhr, status, error) {
+				// handle the error
+				console.error("Error updating target: " + error);
+			}
+		});
+	},
 
 };
 
 // init
 BitBase.init();
-
-
-//-- Slated for removal - as part of the clean up goal everything below is to eventually be removed --//
-
-// NOTICE: this only appears to be used in quicktags - put it there
-// function:	textareasize
-// desc:		Modifies the dimensions of a textarea
-// date:		Pre-bitweaver
-// params:		elementId = a HTML Id to a textarea
-//				height = nb pixels to add to the height (the number can be negative)
-//				width = nb pixels to add to the width
-//				formid = a HTML Id to form - see Note:
-// Note:		* The form must have 2 input rows and cols
-function textareasize(elementId, height) {
-	textarea = document.getElementById( elementId );
-	if (textarea && height != 0 && textarea.rows + height > 5) {
-		textarea.rows += height;
-		BitBase.setCookie('rows', textarea.rows);
-	}
-}
-
-// NOTICE: Slated for delete - no use in bitweaver known and redundant to getElementValue
-function getRadioValue(elementName) {
-	var element = document.getElementsByName(elementName);
-	var bt_count = element.length; // can't use element.length in the loop, as it would decrement
-
-	for( var i = 0; i < bt_count; i++ ) {
-		if (element[i].checked == true) {
-			return element[i].value;
-		}
-	}
-}
-
-// NOTICE: Slated for delete - no use in bitweaver known
-// function:	setUserModuleFromCombo
-// desc:		No Idea
-// date:		Pre-bitweaver
-// params:		id = a HTML Id
-function setUserModuleFromCombo(id) {
-	document.getElementById('usermoduledata').value = document.getElementById('usermoduledata').value
-		+ document.getElementById(id).options[document.getElementById(id).selectedIndex].value;
-}
-
-// NOTICE: Slated for delete - no use in bitweaver known except this file
-// function:	setSomeElement
-// desc:		Adds a String to the value of elementId
-// date:		Pre-bitweaver
-// params:		elementId = a HTML Id
-//				strng = the string to be added
-function setSomeElement(elementId, strng) {
-	document.getElementById(elementId).value = document.getElementById(elementId).value + strng;
-}
-
-// NOTICE: ALL the following are deprecated. See pass through call for replacement
-function addLoadHook(func) {
-	BitBase.deprecatedFunc( 'addLoadHook' );
-	BitBase.addLoadHook(func);
-}
-function setCookieArray(cookie, key, value) {
-	BitBase.deprecatedFunc( 'setCookieArray' );
-	BitBase.setCookieArray(cookie, key, value);
-}
-function getCookieArray(cookie, key) {
-	BitBase.deprecatedFunc( 'getCookieArray' );
-	BitBase.getCookieArray(cookie, key);
-}
-function setCookie(name, value, expire, path, domain, secure) {
-	BitBase.deprecatedFunc( 'setCookie' );
-	BitBase.setCookie(name, value, expire, path, domain, secure);
-}
-function getCookie(name) {
-	BitBase.deprecatedFunc( 'getCookie' );
-	BitBase.getCookie(name);
-}
-function deleteCookie(name, path, domain) {
-	BitBase.deprecatedFunc( 'deleteCookie' );
-	BitBase.deleteCookie(name, path, domain);
-}
-function flip(elementId) {
-	BitBase.deprecatedFunc( 'flip' );
-	BitBase.toggleElementDisplay( elementId, 'block' );
-}
-function toggle(elementId) {
-	BitBase.deprecatedFunc( 'toggle' );
-	BitBase.toggleElementDisplay( elementId, 'block', 1 );
-}
-function setupShowHide() {
-	BitBase.deprecatedFunc( 'setupShowHide' );
-	BitBase.setupShowHide();
-}
-function utf16to8(str) {
-	BitBase.deprecatedFunc( 'utf16to8' );
-	BitBase.utf16to8(str);
-}
-function utf8to16(str) {
-	BitBase.deprecatedFunc( 'utf8to16' );
-	BitBase.utf8to16(str);
-}
-function serialize(o) {
-	BitBase.deprecatedFunc( 'serialize' );
-	BitBase.serialize(o);
-}
-function unserialize(ss) {
-	BitBase.deprecatedFunc( 'unserialize' );
-	BitBase.unserialize(ss);
-}
-function genPass(w1, w2, w3) {
-	BitBase.deprecatedFunc( 'genPass' );
-	BitBase.genPass(w1, w2, w3);
-}
-function toggle_dynamic_var(name) {
-	BitBase.deprecatedFunc( 'toggle_dynamic_var' );
-	BitBase.toggleDynamicVar( name );
-}
-function setSelectionRange(textarea, selectionStart, selectionEnd) {
-	BitBase.deprecatedFunc( 'setSelectionRange' );
-	BitBase.setSelectionRange(textarea, selectionStart, selectionEnd);
-}
-function setCaretToPos (textarea, pos) {
-	BitBase.deprecatedFunc( 'setCaretToPos' );
-	BitBase.setCaretToPos(textarea, pos);
-}
-function insertAt(elementId, replaceString) {
-	BitBase.deprecatedFunc( 'insertAt' );
-	BitBase.insertAt(elementId, replaceString);
-}
-function showById(elementId,useCookie) {
-	BitBase.deprecatedFunc( 'showById' );
-	BitBase.showById(elementId,useCookie);
-}
-function hideById(elementId,useCookie) {
-	BitBase.deprecatedFunc( 'hideById' );
-	BitBase.hideById(elementId,useCookie);
-}
-function flipMulti(elementIdStart,elementIdNum,elements,zen){
-	BitBase.deprecatedFunc( 'flipMulti' );
-	BitBase.flipMulti(elementIdStart,elementIdNum,elements,zen);
-}
-function flipIcon(elementId) {
-	BitBase.deprecatedFunc( 'flipIcon' );
-	BitBase.flipIcon(elementId);
-}
-function setFlipIcon(elementId) {
-	BitBase.deprecatedFunc( 'setFlipIcon' );
-	BitBase.setFlipIcon(elementId);
-}
-function flipWithSign(elementId,cookie) {
-	BitBase.deprecatedFunc( 'flipWithSign' );
-	BitBase.flipWithSign(elementId,cookie);
-}
-function setFlipWithSign(elementId) {
-	BitBase.deprecatedFunc( 'setFlipWithSign' );
-	BitBase.setFlipWithSign(elementId);
-}
-function getElementValue(formElementId){
-	BitBase.deprecatedFunc( 'getElementValue' );
-	BitBase.getElementValue(formElementId);
-}
-function setElementValue(formElementId, value){
-	BitBase.deprecatedFunc( 'setElementValue' );
-	BitBase.setElementValue(formElementId, value);
-}
-function switchCheckboxes(the_form, elements_name, switcher_name) {
-	BitBase.deprecatedFunc( 'switchCheckboxes' );
-	BitBase.switchCheckboxes(the_form, elements_name, switcher_name);
-}
-function disableSubmit(id) {
-	BitBase.deprecatedFunc( 'disableSubmit' );
-	BitBase.disableSubmit(id);
-}
-function go(o) {
-	BitBase.deprecatedFunc( 'go' );
-	BitBase.go(o);
-}
-function popUpWin(url, type, strWidth, strHeight) {
-	BitBase.deprecatedFunc( 'popUpWin' );
-	BitBase.popUpWin(url, type, strWidth, strHeight);
-}
-function closeWin(){
-	BitBase.deprecatedFunc( 'closeWin' );
-	BitBase.closeWin();
-}
