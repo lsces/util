@@ -14,7 +14,7 @@
  *
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
  *
- * @version    CVS: $Id: Address.php 228638 2007-02-01 09:33:00Z mic $
+ * @version    CVS: $Id$
  *
  * @link       http://pear.php.net/package/Text_Wiki
  *
@@ -23,7 +23,7 @@
 class Text_Wiki_Render_Xhtml_Address extends Text_Wiki_Render {
 
     var $conf = array(
-        'css' => null
+        "css" => null
     );
 
     /**
@@ -41,14 +41,14 @@ class Text_Wiki_Render_Xhtml_Address extends Text_Wiki_Render {
 
     function token($options)
     {
-        if ($options['type'] == 'start') {
-            $css = $this->formatConf(' class="%s"', 'css');
+        if ($options["type"] == "start") {
+            $css = $this->formatConf(' class="%s"', "css");
             return "<address$css>";
         }
 
-        if ($options['type'] == 'end') {
-            return '</address>';
+        if ($options["type"] == "end") {
+            return "</address>";
         }
+		return "";
     }
 }
-?>

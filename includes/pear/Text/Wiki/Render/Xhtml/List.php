@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: List.php 200073 2005-11-06 10:38:25Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,10 +26,10 @@
 class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
 
     var $conf = array(
-        'css_ol' => null,
-        'css_ol_li' => null,
-        'css_ul' => null,
-        'css_ul_li' => null
+        "css_ol" => null,
+        "css_ol_li" => null,
+        "css_ul" => null,
+        "css_ul_li" => null
     );
 
     /**
@@ -55,15 +55,15 @@ class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
 
         // set up indenting so that the results look nice; we do this
         // in two steps to avoid str_pad mathematics.  ;-)
-        $pad = str_pad('', $level, "\t");
-        $pad = str_replace("\t", '    ', $pad);
+        $pad = str_pad("", $level, "\t");
+        $pad = str_replace("\t", "    ", $pad);
 
         switch ($type) {
 
-        case 'bullet_list_start':
+        case "bullet_list_start":
 
             // build the base HTML
-            $css = $this->formatConf(' class="%s"', 'css_ul');
+            $css = $this->formatConf(' class="%s"', "css_ul");
             $html = "<ul$css>";
 
             /*
@@ -79,7 +79,7 @@ class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
             return $html;
             break;
 
-        case 'bullet_list_end':
+        case "bullet_list_end":
 
             // build the base HTML
             $html = "</li>\n$pad</ul>";
@@ -95,14 +95,14 @@ class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
             return $html;
             break;
 
-        case 'number_list_start':
+        case "number_list_start":
             if (isset($format)) {
                 $format = ' type="' . $format . '"';
             } else  {
-                $format = '';
+                $format = "";
             }
             // build the base HTML
-            $css = $this->formatConf(' class="%s"', 'css_ol');
+            $css = $this->formatConf(' class="%s"', "css_ol");
             $html = "<ol{$format}{$css}>";
 
             /*
@@ -118,7 +118,7 @@ class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
             return $html;
             break;
 
-        case 'number_list_end':
+        case "number_list_end":
 
             // build the base HTML
             $html = "</li>\n$pad</ol>";
@@ -134,14 +134,14 @@ class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
             return $html;
             break;
 
-        case 'bullet_item_start':
-        case 'number_item_start':
+        case "bullet_item_start":
+        case "number_item_start":
 
             // pick the proper CSS class
-            if ($type == 'bullet_item_start') {
-                $css = $this->formatConf(' class="%s"', 'css_ul_li');
+            if ($type == "bullet_item_start") {
+                $css = $this->formatConf(' class="%s"', "css_ul_li");
             } else {
-                $css = $this->formatConf(' class="%s"', 'css_ol_li');
+                $css = $this->formatConf(' class="%s"', "css_ol_li");
             }
 
             // build the base HTML
@@ -158,13 +158,13 @@ class Text_Wiki_Render_Xhtml_List extends Text_Wiki_Render {
             return $html;
             break;
 
-        case 'bullet_item_end':
-        case 'number_item_end':
+        case "bullet_item_end":
+        case "number_item_end":
         default:
             // ignore item endings and all other types.
             // item endings are taken care of by the other types
             // depending on their place in the list.
-            return '';
+            return "";
             break;
         }
     }

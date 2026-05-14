@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Embed.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Embeds the results of a PHP script at render-time.
 * 
-* This class implements a Text_Wiki_Parse to embed the contents of a URL
+* This class implements a Text_Wiki_Parse_Default to embed the contents of a URL
 * inside the page at render-time.  Typically used to get script output.
 * This differs from the 'include' rule, which incorporates results at
 * parse-time; 'embed' output does not get parsed by Text_Wiki, while
@@ -38,10 +38,10 @@
 * 
 */
 
-class Text_Wiki_Parse_Embed extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Embed extends Text_Wiki_Parse {
     
     var $conf = array(
-        'base' => '/path/to/scripts/'
+        "base" => "/path/to/scripts/"
     );
     
     var $file = null;
@@ -83,11 +83,11 @@ class Text_Wiki_Parse_Embed extends Text_Wiki_Parse {
     function process(&$matches)
     {    
         // save the file location
-        $this->file = $this->getConf('base', './') . $matches[2];
+        $this->file = $this->getConf("base", "./") . $matches[2];
         
         // extract attribs as variables in the local space
         $this->vars = $this->getAttrs($matches[3]);
-        unset($this->vars['this']);
+        unset($this->vars["this"]);
         extract($this->vars);
         
         // run the script
@@ -99,8 +99,7 @@ class Text_Wiki_Parse_Embed extends Text_Wiki_Parse {
         // done, place the script output directly in the source
         return $this->wiki->addToken(
             $this->rule,
-            array('text' => $this->output)
+            array("text" => $this->output)
         );
     }
 }
-?>

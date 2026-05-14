@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Preformatted.php 229275 2007-02-07 13:40:44Z mic $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -40,8 +40,8 @@ class Text_Wiki_Render_Xhtml_Preformatted extends Text_Wiki_Render {
 
     function token($options)
     {
-        $text = $this->textEncode($options['text']);
-        return '<pre>'.$text.'</pre>';
+        $text = $this->textEncode($options["text"]);
+        return "<pre>".$text."</pre>";
     }
 }
 ?>

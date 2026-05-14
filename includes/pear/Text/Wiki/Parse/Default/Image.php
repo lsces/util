@@ -12,7 +12,7 @@
 *
 * @license LGPL
 *
-* @version $Id: Image.php 195859 2005-09-12 11:34:44Z toggg $
+* @version $Id$
 *
 */
 
@@ -28,7 +28,7 @@
 *
 */
 
-class Text_Wiki_Parse_Image extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Image extends Text_Wiki_Parse {
 
     /**
      * URL schemes recognized by this rule.
@@ -37,9 +37,9 @@ class Text_Wiki_Parse_Image extends Text_Wiki_Parse {
      * @var array
     */
     var $conf = array(
-        'schemes' => 'http|https|ftp|gopher|news',
-        'host_regexp' => '(?:[^.\s/"\'<\\\#delim#\ca-\cz]+\.)*[a-z](?:[-a-z0-9]*[a-z0-9])?\.?',
-        'path_regexp' => '(?:/[^\s"<\\\#delim#\ca-\cz]*)?'
+        "schemes" => "http|https|ftp|gopher|news",
+        "host_regexp" => '(?:[^.\s/"\'<\\\#delim#\ca-\cz]+\.)*[a-z](?:[-a-z0-9]*[a-z0-9])?\.?',
+        "path_regexp" => '(?:/[^\s"<\\\#delim#\ca-\cz]*)?'
     );
 
     /**
@@ -63,7 +63,7 @@ class Text_Wiki_Parse_Image extends Text_Wiki_Parse {
      * @var string
      * @see parse()
      */
-    var $url = '';
+    var $url = "";
 
      /**
      * Constructor.
@@ -73,17 +73,30 @@ class Text_Wiki_Parse_Image extends Text_Wiki_Parse {
      * @return The parser object
      * @access public
      */
-    function Text_Wiki_Parse_Image(&$obj)
+    function __construct(&$obj)
     {
         $default = $this->conf;
-        parent::Text_Wiki_Parse($obj);
+        parent::__construct($obj);
 
         // convert the list of recognized schemes to a regex OR,
-        $schemes = $this->getConf('schemes', $default['schemes']);
-        $this->url = str_replace( '#delim#', $this->wiki->delim,
-           '#(?:' . (is_array($schemes) ? implode('|', $schemes) : $schemes) . ')://'
-           . $this->getConf('host_regexp', $default['host_regexp'])
-           . $this->getConf('path_regexp', $default['path_regexp']) .'#');
+        $schemes = $this->getConf("schemes", $default["schemes"]);
+        $this->url = str_replace( "#delim#", $this->wiki->delim,
+           "#(?:" . (is_array($schemes) ? implode("|", $schemes) : $schemes) . ")://"
+           . $this->getConf("host_regexp", $default["host_regexp"])
+           . $this->getConf("path_regexp", $default["path_regexp"]) ."#");
+    }
+
+    /**
+     * Constructor.
+     * We override the constructor to build up the url regex from config
+     *
+     * @param object &$obj the base conversion handler
+     * @return The parser object
+     * @access public
+     */
+    function Text_Wiki_Parse_Default_Image(&$obj)
+    {
+        self::__construct($obj);
     }
 
     /**
@@ -105,26 +118,26 @@ class Text_Wiki_Parse_Image extends Text_Wiki_Parse {
 
     function process(&$matches)
     {
-        $pos = strpos($matches[2], ' ');
+        $pos = strpos($matches[2], " ");
 
         if ($pos === false) {
             $options = array(
-                'src' => $matches[2],
-                'attr' => array());
+                "src" => $matches[2],
+                "attr" => array());
         } else {
             // everything after the space is attribute arguments
             $options = array(
-                'src' => substr($matches[2], 0, $pos),
-                'attr' => $this->getAttrs(substr($matches[2], $pos+1))
+                "src" => substr($matches[2], 0, $pos),
+                "attr" => $this->getAttrs(substr($matches[2], $pos+1))
             );
             // check the scheme case of external link
-            if (array_key_exists('link', $options['attr'])) {
+            if (array_key_exists("link", $options["attr"])) {
                 // external url ?
-                if (($pos = strpos($options['attr']['link'], '://')) !== false) {
-                    if (!preg_match($this->url, $options['attr']['link'])) {
+                if (($pos = strpos($options["attr"]["link"], "://")) !== false) {
+                    if (!preg_match($this->url, $options["attr"]["link"])) {
                         return $matches[0];
                     }
-                } elseif (in_array('Wikilink', $this->wiki->disable)) {
+                } elseif (in_array("Wikilink", $this->wiki->disable)) {
                         return $matches[0]; // Wikilink disabled
                 }
             }
@@ -133,4 +146,3 @@ class Text_Wiki_Parse_Image extends Text_Wiki_Parse {
         return $this->wiki->addToken($this->rule, $options);
     }
 }
-?>

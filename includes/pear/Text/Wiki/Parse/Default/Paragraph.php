@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Paragraph.php 286814 2009-08-04 17:03:17Z rodrigosprimo $
+* @version $Id$
 * 
 */
 
@@ -32,7 +32,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Paragraph extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Paragraph extends Text_Wiki_Parse {
     
     /**
     * 
@@ -48,15 +48,15 @@ class Text_Wiki_Parse_Paragraph extends Text_Wiki_Parse {
     var $regex = "/^.*?\n\n/m";
     
     var $conf = array(
-        'skip' => array(
-            'blockquote', // are we sure about this one?
-            'code',
-            'heading',
-            'horiz',
-            'deflist',
-            'table',
-            'list',
-            'toc'
+        "skip" => array(
+            "blockquote", // are we sure about this one?
+            "code",
+            "heading",
+            "horiz",
+            "deflist",
+            "table",
+            "list",
+            "toc"
         )
     );
     
@@ -81,11 +81,11 @@ class Text_Wiki_Parse_Paragraph extends Text_Wiki_Parse {
     function process(&$matches)
     {
         $delim = $this->wiki->delim;
-        $skip = $this->getConf('skip', array());
+        $skip = $this->getConf("skip", array());
         
         // was anything there?
-        if (trim($matches[0]) == '') {
-            return '';
+        if (trim($matches[0]) == "") {
+            return "";
         }
         
         // does the match has tokens inside?
@@ -103,11 +103,11 @@ class Text_Wiki_Parse_Paragraph extends Text_Wiki_Parse {
         // if there is no skipable token inside the match
         // add the Paragraph token and return
         $start = $this->wiki->addToken(
-            $this->rule, array('type' => 'start')
+            $this->rule, array("type" => "start")
         );
         
         $end = $this->wiki->addToken(
-            $this->rule, array('type' => 'end')
+            $this->rule, array("type" => "end")
         );
         
         return $start . trim($matches[0]) . $end;

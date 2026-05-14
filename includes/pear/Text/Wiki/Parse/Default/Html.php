@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Html.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for blocks of HTML code.
 * 
-* This class implements a Text_Wiki_Parse to find source text marked as
+* This class implements a Text_Wiki_Parse_Default to find source text marked as
 * HTML to be redndred as-is.  The block start is marked by <html> on its
 * own line, and the block end is marked by </html> on its own line.
 *
@@ -32,7 +32,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Html extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Html extends Text_Wiki_Parse {
     
     
     /**
@@ -68,7 +68,7 @@ class Text_Wiki_Parse_Html extends Text_Wiki_Parse {
     
     function process(&$matches)
     {    
-        $options = array('text' => $matches[1]);
+        $options = array("text" => $matches[1]);
         return $this->wiki->addToken($this->rule, $options) . $matches[2];
     }
 }

@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Raw.php 214538 2006-06-09 21:32:24Z justinpatrin $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -40,7 +40,7 @@ class Text_Wiki_Render_Xhtml_Raw extends Text_Wiki_Render {
 
     function token($options)
     {
-        return $this->textEncode($options['text']);
+        return $this->textEncode($options["text"]);
     }
 }
 ?>

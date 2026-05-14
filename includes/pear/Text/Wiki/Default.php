@@ -9,11 +9,11 @@
  * @package    Text_Wiki
  * @author     Justin Patrin <justinpatrin@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Default.php 208363 2006-03-01 16:58:17Z justinpatrin $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
-require_once('Text/Wiki.php');
+require_once("Text/Wiki.php");
 
 /**
  * This is the parser for the Default ruleset. For now, this simply extends Text_Wiki.

@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Bold.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -34,7 +34,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Bold extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Bold extends Text_Wiki_Parse {
     
     
     /**
@@ -71,9 +71,8 @@ class Text_Wiki_Parse_Bold extends Text_Wiki_Parse {
     
     function process(&$matches)
     {
-        $start = $this->wiki->addToken($this->rule, array('type' => 'start'));
-        $end = $this->wiki->addToken($this->rule, array('type' => 'end'));
+        $start = $this->wiki->addToken($this->rule, array("type" => "start"));
+        $end = $this->wiki->addToken($this->rule, array("type" => "end"));
         return $start . $matches[1] . $end;
     }
 }
-?>

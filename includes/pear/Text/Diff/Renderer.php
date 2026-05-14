@@ -35,10 +35,10 @@ class Text_Diff_Renderer {
     /**
      * Constructor.
      */
-    function Text_Diff_Renderer($params = array())
+    function __construct($params = array())
     {
         foreach ($params as $param => $value) {
-            $v = '_' . $param;
+            $v = "_" . $param;
             if (isset($this->$v)) {
                 $this->$v = $value;
             }
@@ -54,7 +54,7 @@ class Text_Diff_Renderer {
     {
         $params = array();
         foreach (get_object_vars($this) as $k => $v) {
-            if ($k[0] == '_') {
+            if ($k[0] == "_") {
                 $params[substr($k, 1)] = $v;
             }
         }
@@ -85,7 +85,7 @@ class Text_Diff_Renderer {
             /* If these are unchanged (copied) lines, and we want to keep
              * leading or trailing context lines, extract them from the copy
              * block. */
-            if (is_a($edit, 'Text_Diff_Op_copy')) {
+            if (is_a($edit, "Text_Diff_Op_copy")) {
                 /* Do we have any diff blocks yet? */
                 if (is_array($block)) {
                     /* How many lines to keep as context from the copy
@@ -149,19 +149,19 @@ class Text_Diff_Renderer {
 
         foreach ($edits as $edit) {
             switch (strtolower(get_class($edit))) {
-            case 'text_diff_op_copy':
+            case "text_diff_op_copy":
                 $output .= $this->_context($edit->orig);
                 break;
 
-            case 'text_diff_op_add':
+            case "text_diff_op_add":
                 $output .= $this->_added($edit->final);
                 break;
 
-            case 'text_diff_op_delete':
+            case "text_diff_op_delete":
                 $output .= $this->_deleted($edit->orig);
                 break;
 
-            case 'text_diff_op_change':
+            case "text_diff_op_change":
                 $output .= $this->_changed($edit->orig, $edit->final);
                 break;
             }
@@ -172,21 +172,21 @@ class Text_Diff_Renderer {
 
     function _startDiff()
     {
-        return '';
+        return "";
     }
 
     function _endDiff()
     {
-        return '';
+        return "";
     }
 
     function _blockHeader($xbeg, $xlen, $ybeg, $ylen)
     {
         if ($xlen > 1) {
-            $xbeg .= ',' . ($xbeg + $xlen - 1);
+            $xbeg .= "," . ($xbeg + $xlen - 1);
         }
         if ($ylen > 1) {
-            $ybeg .= ',' . ($ybeg + $ylen - 1);
+            $ybeg .= "," . ($ybeg + $ylen - 1);
         }
 
         // this matches the GNU Diff behaviour
@@ -196,7 +196,7 @@ class Text_Diff_Renderer {
             $xbeg--;
         }
 
-        return $xbeg . ($xlen ? ($ylen ? 'c' : 'd') : 'a') . $ybeg;
+        return $xbeg . ($xlen ? ($ylen ? "c" : "d") : "a") . $ybeg;
     }
 
     function _startBlock($header)
@@ -206,27 +206,27 @@ class Text_Diff_Renderer {
 
     function _endBlock()
     {
-        return '';
+        return "";
     }
 
-    function _lines($lines, $prefix = ' ')
+    function _lines($lines, $prefix = " ")
     {
         return $prefix . implode("\n$prefix", $lines) . "\n";
     }
 
     function _context($lines)
     {
-        return $this->_lines($lines, '  ');
+        return $this->_lines($lines, "  ");
     }
 
     function _added($lines)
     {
-        return $this->_lines($lines, '> ');
+        return $this->_lines($lines, "> ");
     }
 
     function _deleted($lines)
     {
-        return $this->_lines($lines, '< ');
+        return $this->_lines($lines, "< ");
     }
 
     function _changed($orig, $final)

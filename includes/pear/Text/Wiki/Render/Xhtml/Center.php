@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Center.php 230212 2007-02-19 08:51:19Z mic $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,7 +26,7 @@
 class Text_Wiki_Render_Xhtml_Center extends Text_Wiki_Render {
 
     var $conf = array(
-        'css' => null
+        "css" => null
     );
 
     /**
@@ -44,8 +44,8 @@ class Text_Wiki_Render_Xhtml_Center extends Text_Wiki_Render {
 
     function token($options)
     {
-        if ($options['type'] == 'start') {
-            $css = $this->getConf('css');
+        if ($options["type"] == "start") {
+            $css = $this->getConf("css");
             if ($css) {
                 return "<div class=\"$css\">";
             }
@@ -54,8 +54,8 @@ class Text_Wiki_Render_Xhtml_Center extends Text_Wiki_Render {
             }
         }
 
-        if ($options['type'] == 'end') {
-            return '</div>';
+        if ($options["type"] == "end") {
+            return "</div>";
         }
     }
 }

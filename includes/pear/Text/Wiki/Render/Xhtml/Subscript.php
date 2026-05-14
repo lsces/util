@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Subscript.php 191862 2005-07-30 08:03:29Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,7 +26,7 @@
 class Text_Wiki_Render_Xhtml_Subscript extends Text_Wiki_Render {
 
     var $conf = array(
-        'css' => null
+        "css" => null
     );
 
     /**
@@ -44,13 +44,13 @@ class Text_Wiki_Render_Xhtml_Subscript extends Text_Wiki_Render {
 
     function token($options)
     {
-        if ($options['type'] == 'start') {
-            $css = $this->formatConf(' class="%s"', 'css');
+        if ($options["type"] == "start") {
+            $css = $this->formatConf(' class="%s"', "css");
             return "<sub$css>";
         }
 
-        if ($options['type'] == 'end') {
-            return '</sub>';
+        if ($options["type"] == "end") {
+            return "</sub>";
         }
     }
 }

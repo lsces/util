@@ -12,13 +12,13 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Include.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
 /**
 * 
-* This class implements a Text_Wiki_Parse to include the results of a
+* This class implements a Text_Wiki_Parse_Default to include the results of a
 * script directly into the source at parse-time; thus, the output of the
 * script will be parsed by Text_Wiki.  This differs from the 'embed'
 * rule, which incorporates the results at render-time, meaning that the
@@ -38,10 +38,10 @@
 * 
 */
 
-class Text_Wiki_Parse_Include extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Include extends Text_Wiki_Parse {
     
     var $conf = array(
-        'base' => '/path/to/scripts/'
+        "base" => "/path/to/scripts/"
     );
     
     var $file = null;
@@ -80,11 +80,11 @@ class Text_Wiki_Parse_Include extends Text_Wiki_Parse {
     function process(&$matches)
     {
         // save the file location
-        $this->file = $this->getConf('base', './') . $matches[2];
+        $this->file = $this->getConf("base", "./") . $matches[2];
 
         // extract attribs as variables in the local space
         $this->vars = $this->getAttrs($matches[3]);
-        unset($this->vars['this']);
+        unset($this->vars["this"]);
         extract($this->vars);
 
         // run the script

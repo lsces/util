@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Xhtml.php 206939 2006-02-10 22:31:50Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,9 +26,9 @@
 class Text_Wiki_Render_Xhtml extends Text_Wiki_Render {
 
     var $conf = array(
-    	'translate' => HTML_ENTITIES,
-    	'quotes'    => ENT_COMPAT,
-    	'charset'   => 'ISO-8859-1'
+    	"translate" => HTML_ENTITIES,
+    	"quotes"    => ENT_COMPAT,
+    	"charset"   => "ISO-8859-1"
     );
 
     function pre()
@@ -55,9 +55,9 @@ class Text_Wiki_Render_Xhtml extends Text_Wiki_Render {
     {
         // attempt to translate HTML entities in the source.
         // get the config options.
-        $type = $this->getConf('translate', HTML_ENTITIES);
-        $quotes = $this->getConf('quotes', ENT_COMPAT);
-        $charset = $this->getConf('charset', 'ISO-8859-1');
+        $type = $this->getConf("translate", HTML_ENTITIES);
+        $quotes = $this->getConf("quotes", ENT_COMPAT);
+        $charset = $this->getConf("charset", "ISO-8859-1");
 
         // have to check null and false because HTML_ENTITIES is a zero
         if ($type === HTML_ENTITIES) {

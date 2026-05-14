@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Blockquote.php 236408 2007-05-26 18:25:45Z mic $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -25,9 +25,9 @@
  */
 class Text_Wiki_Render_Xhtml_Blockquote extends Text_Wiki_Render {
 
-    var $conf = array(
-        'css' => null
-    );
+    public $conf = [
+		"css" => null,
+	];
 
     /**
     *
@@ -44,29 +44,29 @@ class Text_Wiki_Render_Xhtml_Blockquote extends Text_Wiki_Render {
 
     function token($options)
     {
-        $type = $options['type'];
-        $level = $options['level'];
+        $type = $options["type"];
+        $level = $options["level"];
 
         // set up indenting so that the results look nice; we do this
         // in two steps to avoid str_pad mathematics.  ;-)
-        $pad = str_pad('', $level, "\t");
-        $pad = str_replace("\t", '    ', $pad);
+        $pad = str_pad("", $level, "\t");
+        $pad = str_replace("\t", "    ", $pad);
 
         // pick the css type
-        $css = $this->formatConf(' class="%s"', 'css');
+        $css = $this->formatConf(' class="%s"', "css");
 
-        if (isset($options['css'])) {
-            $css = ' class="' . $options['css']. '"';
+        if (isset($options["css"])) {
+            $css = ' class="' . $options["css"]. '"';
         }
         // starting
-        if ($type == 'start') {
-            return "$pad<blockquote$css>";
+        if ($type == "start") {
+            return "\n$pad<blockquote$css><div>\n$pad    ";
         }
 
         // ending
-        if ($type == 'end') {
-            return $pad . "</blockquote>\n";
+        if ($type == "end") {
+            return "\n$pad</div></blockquote>";
         }
+		return "";
     }
 }
-?>

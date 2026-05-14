@@ -14,7 +14,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Anchor.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -33,7 +33,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Anchor extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Anchor extends Text_Wiki_Parse {
     
     
     /**
@@ -72,16 +72,15 @@ class Text_Wiki_Parse_Anchor extends Text_Wiki_Parse {
         
         $start = $this->wiki->addToken(
             $this->rule,
-            array('type' => 'start', 'name' => $name)
+            array("type" => "start", "name" => $name)
         );
         
         $end = $this->wiki->addToken(
             $this->rule,
-            array('type' => 'end', 'name' => $name)
+            array("type" => "end", "name" => $name)
         );
         
         // done, place the script output directly in the source
         return $start . trim($text) . $end;
     }
 }
-?>

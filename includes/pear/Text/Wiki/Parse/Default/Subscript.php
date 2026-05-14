@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Subscript.php 180691 2005-02-24 17:24:56Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -28,7 +28,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Subscript extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Subscript extends Text_Wiki_Parse {
     
     
     /**
@@ -66,11 +66,11 @@ class Text_Wiki_Parse_Subscript extends Text_Wiki_Parse {
     function process(&$matches)
     {
         $start = $this->wiki->addToken(
-            $this->rule, array('type' => 'start')
+            $this->rule, array("type" => "start")
         );
         
         $end = $this->wiki->addToken(
-            $this->rule, array('type' => 'end')
+            $this->rule, array("type" => "end")
         );
         
         return $start . $matches[1] . $end;

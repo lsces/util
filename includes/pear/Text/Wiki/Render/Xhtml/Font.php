@@ -10,7 +10,7 @@
  * @author     Bertrand Gugger <bertrand@toggg.com>
  * @copyright  2005 bertrand Gugger
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Font.php 192578 2005-08-06 11:36:45Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -61,18 +61,18 @@ class Text_Wiki_Render_Xhtml_Font extends Text_Wiki_Render {
       */
     function token($options)
     {
-        if ($options['type'] == 'end') {
-            return '</span>';
+        if ($options["type"] == "end") {
+            return "</span>";
         }
-        if ($options['type'] != 'start') {
-            return '';
+        if ($options["type"] != "start") {
+            return "";
         }
 
         $ret = '<span style="';
-        if (isset($options['size'])) {
-            $size = trim($options['size']);
+        if (isset($options["size"])) {
+            $size = trim($options["size"]);
             if (is_numeric($size)) {
-                $size .= 'px';
+                $size .= "px";
             }
             $ret .= "font-size: $size;";
         }

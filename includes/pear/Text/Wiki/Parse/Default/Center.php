@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Center.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for centered lines of text.
 * 
-* This class implements a Text_Wiki_Parse to find lines marked for centering.
+* This class implements a Text_Wiki_Parse_Default to find lines marked for centering.
 * The line must start with "= " (i.e., an equal-sign followed by a space).
 *
 * @category Text
@@ -31,7 +31,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Center extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Center extends Text_Wiki_Parse {
     
     
     /**
@@ -64,15 +64,14 @@ class Text_Wiki_Parse_Center extends Text_Wiki_Parse {
     {
         $start = $this->wiki->addToken(
             $this->rule,
-            array('type' => 'start')
+            array("type" => "start")
         );
         
         $end = $this->wiki->addToken(
             $this->rule,
-            array('type' => 'end')
+            array("type" => "end")
         );
         
         return "\n" . $start . $matches[1] . $end . "\n";
     }
 }
-?>

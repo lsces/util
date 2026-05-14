@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Parse.php 191781 2005-07-29 08:57:29Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -106,7 +106,7 @@ class Text_Wiki_Parse {
     *
     */
 
-    function Text_Wiki_Parse(&$obj)
+    function __construct(&$obj)
     {
         // set the reference to the calling Text_Wiki object;
         // this allows us access to the shared source text, token
@@ -117,7 +117,7 @@ class Text_Wiki_Parse {
         // to the tokens array. strip off the Text_Wiki_Parse_ portion.
         // text_wiki_parse_
         // 0123456789012345
-        $tmp = substr(get_class($this), 16);
+        list(,,,,$tmp) = explode("_", get_class($this));
         $this->rule = ucwords(strtolower($tmp));
 
         // override config options for the rule if specified
@@ -130,6 +130,22 @@ class Text_Wiki_Parse {
             );
 
         }
+    }
+
+
+    /**
+    *
+    * Constructor for this parser rule.
+    *
+    * @access public
+    *
+    * @param object &$obj The calling "parent" Text_Wiki object.
+    *
+    */
+
+    function Text_Wiki_Parse(&$obj)
+    {
+        self::__construct($obj);
     }
 
 
@@ -151,7 +167,7 @@ class Text_Wiki_Parse {
     {
         $this->wiki->source = preg_replace_callback(
             $this->regex,
-            array(&$this, 'process'),
+            array(&$this, "process"),
             $this->wiki->source
         );
     }

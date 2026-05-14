@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Emphasis.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for emphasized text.
 * 
-* This class implements a Text_Wiki_Parse to find source text marked for
+* This class implements a Text_Wiki_Parse_Default to find source text marked for
 * emphasis (italics) as defined by text surrounded by two single-quotes.
 * On parsing, the text itself is left in place, but the starting and ending
 * instances of two single-quotes are replaced with tokens.
@@ -33,7 +33,7 @@
 * 
 */
 
-class Text_Wiki_Parse_emphasis extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_emphasis extends Text_Wiki_Parse {
     
     
     /**
@@ -72,11 +72,11 @@ class Text_Wiki_Parse_emphasis extends Text_Wiki_Parse {
     function process(&$matches)
     {
         $start = $this->wiki->addToken(
-            $this->rule, array('type' => 'start')
+            $this->rule, array("type" => "start")
         );
         
         $end = $this->wiki->addToken(
-            $this->rule, array('type' => 'end')
+            $this->rule, array("type" => "end")
         );
         
         return $start . $matches[1] . $end;

@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Toc.php 187179 2005-05-28 21:33:02Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Looks through parsed text and builds a table of contents.
 * 
-* This class implements a Text_Wiki_Parse to find all heading tokens and
+* This class implements a Text_Wiki_Parse_Default to find all heading tokens and
 * build a table of contents.  The [[toc]] tag gets replaced with a list
 * of all the level-2 through level-6 headings.
 *
@@ -33,7 +33,7 @@
 */
 
 
-class Text_Wiki_Parse_Toc extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Toc extends Text_Wiki_Parse {
     
     
     /**
@@ -85,42 +85,42 @@ class Text_Wiki_Parse_Toc extends Text_Wiki_Parse {
         $output = $this->wiki->addToken(
             $this->rule,
             array(
-                'type' => 'list_start',
-                'level' => 0,
-                'attr' => $attr
+                "type" => "list_start",
+                "level" => 0,
+                "attr" => $attr
             )
         );
         
-        foreach ($this->wiki->getTokens('Heading') as $key => $val) {
+        foreach ($this->wiki->getTokens("Heading") as $key => $val) {
             
-            if ($val[1]['type'] != 'start') {
+            if ($val[1]["type"] != "start") {
                 continue;
             }
             
             $options = array(
-                'type'  => 'item_start',
-                'id'    => $val[1]['id'],
-                'level' => $val[1]['level'],
-                'count' => $count ++
+                "type"  => "item_start",
+                "id"    => $val[1]["id"],
+                "level" => $val[1]["level"],
+                "count" => $count ++
             );
             
             $output .= $this->wiki->addToken($this->rule, $options);
             
-            $output .= $val[1]['text'];
+            $output .= $val[1]["text"];
             
             $output .= $this->wiki->addToken(
                 $this->rule,
                 array(
-                    'type' => 'item_end',
-                    'level' => $val[1]['level']
+                    "type" => "item_end",
+                    "level" => $val[1]["level"]
                 )
             );
         }
         
         $output .= $this->wiki->addToken(
             $this->rule, array(
-                'type' => 'list_end',
-                'level' => 0
+                "type" => "list_end",
+                "level" => 0
             )
         );
         

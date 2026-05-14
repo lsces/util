@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Wikilink.php 224670 2006-12-08 21:25:24Z justinpatrin $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,14 +26,14 @@
 class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
 
     var $conf = array(
-        'pages' => array(), // set to null or false to turn off page checks
-        'view_url' => 'http://example.com/index.php?page=%s',
-        'new_url'  => 'http://example.com/new.php?page=%s',
-        'new_text' => '?',
-        'new_text_pos' => 'after', // 'before', 'after', or null/false
-        'css' => null,
-        'css_new' => null,
-        'exists_callback' => null // call_user_func() callback
+        "pages" => array(), // set to null or false to turn off page checks
+        "view_url" => "http://example.com/index.php?page=%s",
+        "new_url"  => "http://example.com/new.php?page=%s",
+        "new_text" => "?",
+        "new_text_pos" => "after", // 'before', 'after', or null/false
+        "css" => null,
+        "css_new" => null,
+        "exists_callback" => null // call_user_func() callback
     );
 
 
@@ -59,8 +59,8 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
         // we need to access it directly instead of through
         // getConf() because we'll need a reference (for
         // object instance method callbacks).
-        if (isset($this->conf['exists_callback'])) {
-            $callback =& $this->conf['exists_callback'];
+        if (isset($this->conf["exists_callback"])) {
+            $callback =& $this->conf["exists_callback"];
         } else {
         	$callback = false;
         }
@@ -70,7 +70,7 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
             $exists = call_user_func($callback, $page);
         } else {
             // no callback, go to the naive page array.
-            $list = $this->getConf('pages');
+            $list = $this->getConf("pages");
             if (is_array($list)) {
                 // yes, check against the page list
                 $exists = in_array($page, $list);
@@ -80,7 +80,7 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
             }
         }
 
-        $anchor = '#'.$this->urlEncode(substr($anchor, 1));
+        $anchor = "#".$this->urlEncode(substr($anchor, 1));
 
         // does the page exist?
         if ($exists) {
@@ -91,9 +91,9 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
             // the HREF.  we support both the old form where
             // the page always comes at the end, and the new
             // form that uses %s for sprintf()
-            $href = $this->getConf('view_url');
+            $href = $this->getConf("view_url");
 
-            if (strpos($href, '%s') === false) {
+            if (strpos($href, "%s") === false) {
                 // use the old form (page-at-end)
                 $href = $href . $this->urlEncode($page) . $anchor;
             } else {
@@ -102,19 +102,19 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
             }
 
             // get the CSS class and generate output
-            $css = ' class="'.$this->textEncode($this->getConf('css')).'"';
+            $css = ' class="'.$this->textEncode($this->getConf("css")).'"';
 
-            $start = '<a'.$css.' href="'.$this->textEncode($href).'">';
-            $end = '</a>';
+            $start = "<a".$css.' href="'.$this->textEncode($href).'">';
+            $end = "</a>";
         } else {
 
             // PAGE DOES NOT EXIST.
 
             // link to a create-page url, but only if new_url is set
-            $href = $this->getConf('new_url', null);
+            $href = $this->getConf("new_url", null);
 
             // set the proper HREF
-            if (! $href || trim($href) == '') {
+            if (! $href || trim($href) == "") {
 
                 // no useful href, return the text as it is
                 //TODO: This is no longer used, need to look closer into this branch
@@ -126,7 +126,7 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
                 // it.  we support both the old form where
                 // the page always comes at the end, and the new
                 // form that uses sprintf()
-                if (strpos($href, '%s') === false) {
+                if (strpos($href, "%s") === false) {
                     // use the old form
                     $href = $href . $this->urlEncode($page);
                 } else {
@@ -136,24 +136,24 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
             }
 
             // get the appropriate CSS class and new-link text
-            $css = ' class="'.$this->textEncode($this->getConf('css_new')).'"';
-            $new = $this->getConf('new_text');
+            $css = ' class="'.$this->textEncode($this->getConf("css_new")).'"';
+            $new = $this->getConf("new_text");
 
             // what kind of linking are we doing?
-            $pos = $this->getConf('new_text_pos');
+            $pos = $this->getConf("new_text_pos");
             if (! $pos || ! $new) {
                 // no position (or no new_text), use css only on the page name
 
-                $start = '<a'.$css.' href="'.$this->textEncode($href).'">';
-                $end = '</a>';
-            } elseif ($pos == 'before') {
+                $start = "<a".$css.' href="'.$this->textEncode($href).'">';
+                $end = "</a>";
+            } elseif ($pos == "before") {
                 // use the new_text BEFORE the page name
-                $start = '<a'.$css.' href="'.$this->textEncode($href).'">'.$this->textEncode($new).'</a>';
-                $end = '';
+                $start = "<a".$css.' href="'.$this->textEncode($href).'">'.$this->textEncode($new)."</a>";
+                $end = "";
             } else {
                 // default, use the new_text link AFTER the page name
-                $start = '';
-                $end = '<a'.$css.' href="'.$this->textEncode($href).'">'.$this->textEncode($new).'</a>';
+                $start = "";
+                $end = "<a".$css.' href="'.$this->textEncode($href).'">'.$this->textEncode($new)."</a>";
             }
         }
         if (!strlen($text)) {
@@ -161,10 +161,10 @@ class Text_Wiki_Render_Xhtml_Wikilink extends Text_Wiki_Render {
         }
         if (isset($type)) {
             switch ($type) {
-            case 'start':
+            case "start":
                 $output = $start;
                 break;
-            case 'end':
+            case "end":
                 $output = $end;
                 break;
             }

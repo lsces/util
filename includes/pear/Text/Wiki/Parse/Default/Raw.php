@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Raw.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -32,7 +32,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Raw extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Raw extends Text_Wiki_Parse {
     
     
     /**
@@ -66,7 +66,7 @@ class Text_Wiki_Parse_Raw extends Text_Wiki_Parse {
     
     function process(&$matches)
     {
-        $options = array('text' => $matches[1]);
+        $options = array("text" => $matches[1]);
         return $this->wiki->addToken($this->rule, $options);
     }
 }

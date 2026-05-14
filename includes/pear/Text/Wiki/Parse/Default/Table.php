@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Table.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for table markup.
 * 
-* This class implements a Text_Wiki_Parse to find source text marked as a
+* This class implements a Text_Wiki_Parse_Default to find source text marked as a
 * set of table rows, where a line start and ends with double-pipes (||)
 * and uses double-pipes to separate table cells.  The rows must be on
 * sequential lines (no blank lines between them) -- a blank line
@@ -34,7 +34,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Table extends Text_Wiki_Parse {
     
     
     /**
@@ -87,7 +87,7 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
     function process(&$matches)
     {
         // our eventual return value
-        $return = '';
+        $return = "";
         
         // the number of columns in the table
         $num_cols = 0;
@@ -107,7 +107,7 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
             // start a new row
             $return .= $this->wiki->addToken(
                 $this->rule,
-                array('type' => 'row_start')
+                array("type" => "row_start")
             );
             
             // cells are separated by double-pipes
@@ -134,7 +134,7 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
                 // if there is no content at all, then it's an instance
                 // of two sets of || next to each other, indicating a
                 // span.
-                if ($cell[$i] == '') {
+                if ($cell[$i] == "") {
                     
                     // add to the span and loop to the next cell
                     $span += 1;
@@ -145,20 +145,20 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
                     // this cell has content.
                     
                     // find any special "attr"ibute cell markers
-                    if (substr($cell[$i], 0, 2) == '> ') {
+                    if (substr($cell[$i], 0, 2) == "> ") {
                         // right-align
-                        $attr = 'right';
+                        $attr = "right";
                         $cell[$i] = substr($cell[$i], 2);
-                    } elseif (substr($cell[$i], 0, 2) == '= ') {
+                    } elseif (substr($cell[$i], 0, 2) == "= ") {
                         // center-align
-                        $attr = 'center';
+                        $attr = "center";
                         $cell[$i] = substr($cell[$i], 2);
-                    } elseif (substr($cell[$i], 0, 2) == '< ') {
+                    } elseif (substr($cell[$i], 0, 2) == "< ") {
                         // left-align
-                        $attr = 'left';
+                        $attr = "left";
                         $cell[$i] = substr($cell[$i], 2);
-                    } elseif (substr($cell[$i], 0, 2) == '~ ') {
-                        $attr = 'header';
+                    } elseif (substr($cell[$i], 0, 2) == "~ ") {
+                        $attr = "header";
                         $cell[$i] = substr($cell[$i], 2);
                     } else {
                         $attr = null;
@@ -168,9 +168,9 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
                     $return .= $this->wiki->addToken(
                         $this->rule, 
                         array (
-                            'type' => 'cell_start',
-                            'attr' => $attr,
-                            'span' => $span
+                            "type" => "cell_start",
+                            "attr" => $attr,
+                            "span" => $span
                         )
                     );
                     
@@ -181,9 +181,9 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
                     $return .= $this->wiki->addToken(
                         $this->rule, 
                         array (
-                            'type' => 'cell_end',
-                            'attr' => $attr,
-                            'span' => $span
+                            "type" => "cell_end",
+                            "attr" => $attr,
+                            "span" => $span
                         )
                     );
                     
@@ -196,7 +196,7 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
             // end the row
             $return .= $this->wiki->addToken(
                 $this->rule,
-                array('type' => 'row_end')
+                array("type" => "row_end")
             );
             
         }
@@ -206,16 +206,16 @@ class Text_Wiki_Parse_Table extends Text_Wiki_Parse {
             $this->wiki->addToken(
                 $this->rule,
                 array(
-                    'type' => 'table_start',
-                    'rows' => $num_rows,
-                    'cols' => $num_cols
+                    "type" => "table_start",
+                    "rows" => $num_rows,
+                    "cols" => $num_cols
                 )
             )
             . $return .
             $this->wiki->addToken(
                 $this->rule,
                 array(
-                    'type' => 'table_end'
+                    "type" => "table_end"
                 )
             );
         

@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Prefilter.php 224599 2006-12-08 08:30:37Z justinpatrin $
+* @version $Id$
 * 
 */
 
@@ -33,7 +33,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Prefilter extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Prefilter extends Text_Wiki_Parse {
     
     
     /**

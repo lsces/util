@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Break.php 191862 2005-07-30 08:03:29Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,7 +26,7 @@
 class Text_Wiki_Render_Xhtml_Break extends Text_Wiki_Render {
 
     var $conf = array(
-        'css' => null
+        "css" => null
     );
 
     /**
@@ -44,7 +44,7 @@ class Text_Wiki_Render_Xhtml_Break extends Text_Wiki_Render {
 
     function token($options)
     {
-        $css = $this->formatConf(' class="%s"', 'css');
+        $css = $this->formatConf(' class="%s"', "css");
         return "<br$css />\n";
     }
 }

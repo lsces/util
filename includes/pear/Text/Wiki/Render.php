@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Render.php 209118 2006-03-11 07:12:13Z justinpatrin $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -90,7 +90,7 @@ class Text_Wiki_Render {
     *
     */
 
-    function Text_Wiki_Render(&$obj)
+    function __construct(&$obj)
     {
         // keep a reference to the calling Text_Wiki object
         $this->wiki =& $obj;
@@ -103,7 +103,7 @@ class Text_Wiki_Render {
 
         // split into pieces at the _ mark.
         // first part is format, second part is rule.
-        $part   = explode('_', $tmp);
+        $part   = explode("_", $tmp);
         $this->format = isset($part[0]) ? ucwords(strtolower($part[0])) : null;
         $this->rule   = isset($part[1]) ? ucwords(strtolower($part[1])) : null;
 
@@ -133,6 +133,22 @@ class Text_Wiki_Render {
                 $this->wiki->renderConf[$this->format][$this->rule]
             );
         }
+    }
+
+
+    /**
+    *
+    * Constructor for this render format or rule.
+    *
+    * @access public
+    *
+    * @param object &$obj The calling "parent" Text_Wiki object.
+    *
+    */
+
+    function Text_Wiki_Render(&$obj)
+    {
+        self::__construct($obj);
     }
 
 
@@ -192,7 +208,7 @@ class Text_Wiki_Render {
     *
     * @access public
     * @param string $urlChunk a part of an url to render
-    * @return rendered url
+    * @return string rendered url
     *
     */
 
@@ -215,4 +231,3 @@ class Text_Wiki_Render {
         return htmlspecialchars($text);
     }
 }
-?>

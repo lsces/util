@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Underline.php 190446 2005-07-10 20:40:20Z justinpatrin $
+* @version $Id$
 * 
 */
 
@@ -34,7 +34,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Underline extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Underline extends Text_Wiki_Parse {
     
     
     /**
@@ -71,8 +71,8 @@ class Text_Wiki_Parse_Underline extends Text_Wiki_Parse {
     
     function process(&$matches)
     {
-        $start = $this->wiki->addToken($this->rule, array('type' => 'start'));
-        $end = $this->wiki->addToken($this->rule, array('type' => 'end'));
+        $start = $this->wiki->addToken($this->rule, array("type" => "start"));
+        $end = $this->wiki->addToken($this->rule, array("type" => "end"));
         return $start . $matches[1] . $end;
     }
 }

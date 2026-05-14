@@ -12,7 +12,7 @@
 *
 * @license LGPL
 *
-* @version $Id: List.php 248434 2007-12-17 16:12:25Z justinpatrin $
+* @version $Id$
 *
 */
 
@@ -36,7 +36,7 @@
 *
 */
 
-class Text_Wiki_Parse_List extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_List extends Text_Wiki_Parse {
 
 
     /**
@@ -86,7 +86,7 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
     function process(&$matches)
     {
         // the replacement text we will return
-        $return = '';
+        $return = "";
 
         // the list of post-processing matches
         $list = array();
@@ -127,12 +127,12 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
             $level = strlen($val[1]) + 1;
 
             // get the list item type
-            if ($val[2] == '*') {
-                $type = 'bullet';
-            } elseif ($val[2] == '#') {
-                $type = 'number';
+            if ($val[2] == "*") {
+                $type = "bullet";
+            } elseif ($val[2] == "#") {
+                $type = "number";
             } else {
-                $type = 'unknown';
+                $type = "unknown";
             }
 
             // get the text of the list item
@@ -145,8 +145,6 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
                 if ($level == $numSpaces) {
                     $level = count($stack);
                 } else {
-
-                    $numSpaces = $level;
 
                     // reset level as sometimes people use too many spaces
                     $level = count($stack) + 1;
@@ -161,8 +159,8 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
                     $return .= $this->wiki->addToken(
                                                      $this->rule,
                                                      array(
-                                                           'type' => $type . '_list_start',
-                                                           'level' => $level - 1
+                                                           "type" => $type . "_list_start",
+                                                           "level" => $level - 1
                                                            )
                                                      );
                 }
@@ -185,8 +183,8 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
                 $return .= $this->wiki->addToken(
                     $this->rule,
                     array (
-                        'type' => array_pop($stack) . '_list_end',
-                        'level' => $tmp
+                        "type" => array_pop($stack) . "_list_end",
+                        "level" => $tmp
                     )
                 );
 
@@ -197,6 +195,8 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
                 // reset the item count for the popped indent level
                 unset($itemcount[$tmp + 1]);
             }
+
+            $numSpaces = $level;
 
             // add to the item count for this list (taking into account
             // which level we are at).
@@ -220,10 +220,10 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
             $start = $this->wiki->addToken(
                 $this->rule,
                 array(
-                    'type' => $type . '_item_start',
-                    'level' => $level,
-                    'count' => $itemcount[$level],
-                    'first' => $first
+                    "type" => $type . "_item_start",
+                    "level" => $level,
+                    "count" => $itemcount[$level],
+                    "first" => $first
                 )
             );
 
@@ -231,9 +231,9 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
             $end = $this->wiki->addToken(
                 $this->rule,
                 array(
-                    'type' => $type . '_item_end',
-                    'level' => $level,
-                    'count' => $itemcount[$level]
+                    "type" => $type . "_item_end",
+                    "level" => $level,
+                    "count" => $itemcount[$level]
                 )
             );
 
@@ -249,8 +249,8 @@ class Text_Wiki_Parse_List extends Text_Wiki_Parse {
             $return .= $this->wiki->addToken(
                 $this->rule,
                 array (
-                    'type' => array_pop($stack) . '_list_end',
-                    'level' => count($stack)
+                    "type" => array_pop($stack) . "_list_end",
+                    "level" => count($stack)
                 )
             );
         }

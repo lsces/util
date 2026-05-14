@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Revise.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -28,7 +28,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Revise extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Revise extends Text_Wiki_Parse {
     
     
     /**
@@ -58,8 +58,8 @@ class Text_Wiki_Parse_Revise extends Text_Wiki_Parse {
     */
     
     var $conf = array(
-        'delmark' => '---',
-        'insmark' => '+++'
+        "delmark" => "---",
+        "insmark" => "+++"
     );
     
     
@@ -81,10 +81,10 @@ class Text_Wiki_Parse_Revise extends Text_Wiki_Parse {
     
     function process(&$matches)
     {
-        $output = '';
+        $output = "";
         $src = $matches[1];
-        $delmark = $this->getConf('delmark'); // ---
-        $insmark = $this->getConf('insmark'); // +++
+        $delmark = $this->getConf("delmark"); // ---
+        $insmark = $this->getConf("insmark"); // +++
         
         // '---' must be before '+++' (if they both appear)
         $del = strpos($src, $delmark);
@@ -111,13 +111,13 @@ class Text_Wiki_Parse_Revise extends Text_Wiki_Parse {
             }
             
             $output .= $this->wiki->addToken(
-                $this->rule, array('type' => 'del_start')
+                $this->rule, array("type" => "del_start")
             );
             
             $output .= $text;
             
             $output .= $this->wiki->addToken(
-                $this->rule, array('type' => 'del_end')
+                $this->rule, array("type" => "del_end")
             );
         }
         
@@ -129,13 +129,13 @@ class Text_Wiki_Parse_Revise extends Text_Wiki_Parse {
             $text = substr($src, $ins);
             
             $output .= $this->wiki->addToken(
-                $this->rule, array('type' => 'ins_start')
+                $this->rule, array("type" => "ins_start")
             );
             
             $output .= $text;
             
             $output .= $this->wiki->addToken(
-                $this->rule, array('type' => 'ins_end')
+                $this->rule, array("type" => "ins_end")
             );
         }
         

@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Revise.php 191862 2005-07-30 08:03:29Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,8 +26,8 @@
 class Text_Wiki_Render_Xhtml_Revise extends Text_Wiki_Render {
 
     var $conf = array(
-        'css_ins' => null,
-        'css_del' => null
+        "css_ins" => null,
+        "css_del" => null
     );
 
 
@@ -46,21 +46,21 @@ class Text_Wiki_Render_Xhtml_Revise extends Text_Wiki_Render {
 
     function token($options)
     {
-        if ($options['type'] == 'del_start') {
-            $css = $this->formatConf(' class="%s"', 'css_del');
+        if ($options["type"] == "del_start") {
+            $css = $this->formatConf(' class="%s"', "css_del");
             return "<del$css>";
         }
 
-        if ($options['type'] == 'del_end') {
+        if ($options["type"] == "del_end") {
             return "</del>";
         }
 
-        if ($options['type'] == 'ins_start') {
-            $css = $this->formatConf(' class="%s"', 'css_ins');
+        if ($options["type"] == "ins_start") {
+            $css = $this->formatConf(' class="%s"', "css_ins");
             return "<ins$css>";
         }
 
-        if ($options['type'] == 'ins_end') {
+        if ($options["type"] == "ins_end") {
             return "</ins>";
         }
     }

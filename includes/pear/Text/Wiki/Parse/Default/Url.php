@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Url.php 293784 2010-01-20 18:48:09Z justinpatrin $
+* @version $Id$
 * 
 */
 
@@ -49,7 +49,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Url extends Text_Wiki_Parse {
     
     
     /**
@@ -76,13 +76,13 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
     */
     
     var $conf = array(
-        'schemes' => array(
-            'http://',
-            'https://',
-            'ftp://',
-            'gopher://',
-            'news://',
-            'mailto:'
+        "schemes" => array(
+            "http://",
+            "https://",
+            "ftp://",
+            "gopher://",
+            "news://",
+            "mailto:"
         )
     );
     
@@ -97,18 +97,18 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
     * 
     */
     
-    function Text_Wiki_Parse_Url(&$obj)
+    function __construct(&$obj)
     {
-        parent::Text_Wiki_Parse($obj);
+        parent::__construct($obj);
         
         // convert the list of recognized schemes to a regex-safe string,
         // where the pattern delim is a slash
         $tmp = array();
-        $list = $this->getConf('schemes', array());
+        $list = $this->getConf("schemes", array());
         foreach ($list as $val) {
-            $tmp[] = preg_quote($val, '/');
+            $tmp[] = preg_quote($val, "/");
         }
-        $schemes = implode('|', $tmp);
+        $schemes = implode("|", $tmp);
         
         // build the regex
         $this->regex =
@@ -118,6 +118,21 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
             ")*" . // end pattern
             "[^ \\t\\n\\/\"\'{$this->wiki->delim}]*" .
             "[A-Za-z0-9\\/?=&~_#]";
+    }
+
+    /**
+    * 
+    * Constructor.
+    * 
+    * We override the constructor so we can comment the regex nicely.
+    * 
+    * @access public
+    * 
+    */
+    
+    function Text_Wiki_Parse_Default_Url(&$obj)
+    {
+        self::__construct($obj);
     }
     
     
@@ -143,7 +158,7 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
         // the replacement text for matches.
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'processDescr'),
+            array(&$this, "processDescr"),
             $this->wiki->source
         );
         
@@ -160,7 +175,7 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
         // the replacement text for matches.
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'processFootnote'),
+            array(&$this, "processFootnote"),
             $this->wiki->source
         );
         
@@ -172,12 +187,12 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
         
         // the regular expression for this kind of URL
         
-        $tmp_regex = '/(^|[^A-Za-z])(' . $this->regex . ')(.*?)/';
+        $tmp_regex = "/(^|[^A-Za-z])(" . $this->regex . ")(.*?)/";
         
         // use the standard callback for inline URLs
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'process'),
+            array(&$this, "process"),
             $this->wiki->source
         );
     }
@@ -202,9 +217,9 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
     {
         // set options
         $options = array(
-            'type' => 'inline',
-            'href' => $matches[2],
-            'text' => $matches[2]
+            "type" => "inline",
+            "href" => $matches[2],
+            "text" => $matches[2]
         );
         
         // tokenize
@@ -235,9 +250,9 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
         
         // set options
         $options = array(
-            'type' => 'footnote',
-            'href' => $matches[1],
-            'text' => $this->footnoteCount
+            "type" => "footnote",
+            "href" => $matches[1],
+            "text" => $this->footnoteCount
         );
         
         // tokenize
@@ -269,9 +284,9 @@ class Text_Wiki_Parse_Url extends Text_Wiki_Parse {
     {
         // set options
         $options = array(
-            'type' => 'descr',
-            'href' => $matches[1],
-            'text' => $matches[4]
+            "type" => "descr",
+            "href" => $matches[1],
+            "text" => $matches[4]
         );
         
         // tokenize

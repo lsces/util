@@ -9,14 +9,14 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Freelink.php 191862 2005-07-30 08:03:29Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
 /**
  * The wikilink render class.
  */
-require_once 'Text/Wiki/Render/Xhtml/Wikilink.php';
+require_once "Text/Wiki/Render/Xhtml/Wikilink.php";
 
 /**
  * This class renders free links in XHTML.

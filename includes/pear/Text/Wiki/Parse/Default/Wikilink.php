@@ -12,7 +12,7 @@
 *
 * @license LGPL
 *
-* @version $Id: Wikilink.php 224598 2006-12-08 08:23:51Z justinpatrin $
+* @version $Id$
 *
 */
 
@@ -42,18 +42,18 @@
 *
 */
 
-class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Wikilink extends Text_Wiki_Parse {
 
     var $conf = array (
-                       'ext_chars' => false,
-                       'utf-8' => false
+                       "ext_chars" => false,
+                       "utf-8" => false
     );
 
     /**
     *
     * Constructor.
     *
-    * We override the Text_Wiki_Parse constructor so we can
+    * We override the Text_Wiki_Parse_Default constructor so we can
     * explicitly comment each part of the $regex property.
     *
     * @access public
@@ -62,15 +62,15 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     *
     */
 
-    function Text_Wiki_Parse_Wikilink(&$obj)
+    function __construct(&$obj)
     {
-        parent::Text_Wiki_Parse($obj);
+        parent::__construct($obj);
 
-        if ($this->getConf('utf-8')) {
+        if ($this->getConf("utf-8")) {
 			$upper = 'A-Z\p{Lu}';
 			$lower = 'a-z0-9\p{Ll}';
 			$either = 'A-Za-z0-9\p{L}';
-        } else if ($this->getConf('ext_chars')) {
+        } else if ($this->getConf("ext_chars")) {
         	// use an extended character set; this should
         	// allow for umlauts and so on.  taken from the
         	// Tavi project defaults.php file.
@@ -102,6 +102,24 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
             ")?)?)";           // end subpatterns (/4)(/3)(/2)
     }
 
+    /**
+    *
+    * Constructor.
+    *
+    * We override the Text_Wiki_Parse_Default constructor so we can
+    * explicitly comment each part of the $regex property.
+    *
+    * @access public
+    *
+    * @param object &$obj The calling "parent" Text_Wiki object.
+    *
+    */
+
+    function Text_Wiki_Parse_Default_Wikilink(&$obj)
+    {
+        self::__construct($obj);
+    }
+
 
     /**
     *
@@ -116,26 +134,23 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     function parse()
     {
         // described wiki links
-        $tmp_regex = '/\[' . $this->regex . ' (.+?)\]/'.($this->getConf('utf-8') ? 'u' : '');
+        $tmp_regex = '/\[' . $this->regex . ' (.+?)\]/'.($this->getConf("utf-8") ? "u" : "");
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'processDescr'),
+            array(&$this, "processDescr"),
             $this->wiki->source
         );
 
         // standalone wiki links
-        if ($this->getConf('utf-8')) {
+        if ($this->getConf("utf-8")) {
 			$either = 'A-Za-z0-9\p{L}';
-        } else if ($this->getConf('ext_chars')) {
-			$either = "A-Za-z0-9\xc0-\xfe";
-		} else {
-			$either = "A-Za-z0-9";
-		}
+        } else
+			$either = ( $this->getConf( "ext_chars" ) ) ? "A-Za-z0-9\xc0-\xfe" : "A-Za-z0-9";
 
-        $tmp_regex = "/(^|[^{$either}\-_]){$this->regex}/".($this->getConf('utf-8') ? 'u' : '');
+        $tmp_regex = "/(^|[^{$either}\-_]){$this->regex}/".($this->getConf("utf-8") ? "u" : "");
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-			[&$this, 'process' ],
+            array(&$this, "process"),
             $this->wiki->source
         );
     }
@@ -149,7 +164,7 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     *
     * @param array &$matches The array of matches from parse().
     *
-    * @return string A delimited token to be used as a placeholder in
+    * @return A delimited token to be used as a placeholder in
     * the source text, plus any text priot to the match.
     *
     */
@@ -157,11 +172,11 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     function processDescr(&$matches)
     {
         // set the options
-        $options = [
-			'page'   => $matches[1],
-			'text'   => $matches[5],
-			'anchor' => $matches[3],
-		];
+        $options = array(
+            "page"   => $matches[1],
+            "text"   => $matches[5],
+            "anchor" => $matches[3]
+        );
 
         // create and return the replacement token and preceding text
         return $this->wiki->addToken($this->rule, $options); // . $matches[7];
@@ -177,7 +192,7 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     *
     * @param array &$matches The array of matches from parse().
     *
-    * @return string A delimited token to be used as a placeholder in
+    * @return A delimited token to be used as a placeholder in
     * the source text, plus any text prior to the match.
     *
     */
@@ -186,16 +201,16 @@ class Text_Wiki_Parse_Wikilink extends Text_Wiki_Parse {
     {
         // when prefixed with !, it's explicitly not a wiki link.
         // return everything as it was.
-        if ($matches[2][0] == '!') {
+        if ($matches[2][0] == "!") {
             return $matches[1] . substr($matches[2], 1) . $matches[3];
         }
 
         // set the options
-        $options = [
-			'page'   => $matches[2],
-			'text'   => $matches[2] . $matches[3],
-			'anchor' => $matches[3],
-		];
+        $options = array(
+            "page" => $matches[2],
+            "text" => $matches[2] . $matches[3],
+            "anchor" => $matches[3]
+        );
 
         // create and return the replacement token and preceding text
         return $matches[1] . $this->wiki->addToken($this->rule, $options);

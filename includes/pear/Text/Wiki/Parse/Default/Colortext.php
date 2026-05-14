@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Colortext.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -28,7 +28,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Colortext extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Colortext extends Text_Wiki_Parse {
     
     /**
     * 
@@ -70,20 +70,19 @@ class Text_Wiki_Parse_Colortext extends Text_Wiki_Parse {
         $start = $this->wiki->addToken(
             $this->rule, 
             array(
-                'type' => 'start',
-                'color' => $matches[1]
+                "type" => "start",
+                "color" => $matches[1]
             )
         );
         
         $end = $this->wiki->addToken(
             $this->rule, 
             array(
-                'type' => 'end',
-                'color' => $matches[1]
+                "type" => "end",
+                "color" => $matches[1]
             )
         );
         
         return $start . $matches[2] . $end;
     }
 }
-?>

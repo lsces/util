@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Code.php 237313 2007-06-09 23:11:25Z justinpatrin $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for text marked as a code example block.
 * 
-* This class implements a Text_Wiki_Parse to find sections marked as code
+* This class implements a Text_Wiki_Parse_Default to find sections marked as code
 * examples.  Blocks are marked as the string <code> on a line by itself,
 * followed by the inline code example, and terminated with the string
 * </code> on a line by itself.  The code example is run through the
@@ -35,7 +35,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Code extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Code extends Text_Wiki_Parse {
     
     
     /**
@@ -49,8 +49,9 @@ class Text_Wiki_Parse_Code extends Text_Wiki_Parse {
     * 
     */
     
-/*    var $regex = '/^(\<code( .+)?\>)\n(.+)\n(\<\/code\>)(\s|$)/Umsi';*/
-    var $regex = ';^<code(\s[^>]*)?>((?:(?R)|.*?)*)\n</code>(\s|$);msi';
+    /* var $regex = '/^(\<code( .+)?\>)\n(.+)\n(\<\/code\>)(\s|$)/Umsi'; */
+    /* var $regex = ';^<code(\s[^>]*)?>((?:(?R)|.*?)*)\n</code>(\s|$);msi'; */
+    var $regex = ';^<code(\s[^>]*)?>(.*?)\n</code>(\s|$);msi';
     
     /**
     * 
@@ -72,28 +73,27 @@ class Text_Wiki_Parse_Code extends Text_Wiki_Parse {
         // are there additional attribute arguments?
         $args = trim($matches[1]);
         
-        if ($args == '') {
+        if ($args == "") {
             $options = array(
-                'text' => $matches[2],
-                'attr' => array('type' => '')
+                "text" => $matches[2],
+                "attr" => array("type" => "")
             );
         } else {
         	// get the attributes...
         	$attr = $this->getAttrs($args);
         	
         	// ... and make sure we have a 'type'
-        	if (! isset($attr['type'])) {
-        		$attr['type'] = '';
+        	if (! isset($attr["type"])) {
+        		$attr["type"] = "";
         	}
         	
         	// retain the options
             $options = array(
-                'text' => $matches[2],
-                'attr' => $attr
+                "text" => $matches[2],
+                "attr" => $attr
             );
         }
         
         return $this->wiki->addToken($this->rule, $options) . $matches[3];
     }
 }
-?>

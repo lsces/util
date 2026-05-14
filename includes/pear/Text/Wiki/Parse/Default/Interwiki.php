@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Interwiki.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for interwiki links.
 * 
-* This class implements a Text_Wiki_Parse to find source text marked as
+* This class implements a Text_Wiki_Parse_Default to find source text marked as
 * an Interwiki link.  See the regex for a detailed explanation of the
 * text matching procedure; e.g., "InterWikiName:PageName".
 *
@@ -32,7 +32,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Interwiki extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Interwiki extends Text_Wiki_Parse {
     
     // double-colons wont trip up now
     var $regex = '([A-Za-z0-9_]+):((?!:)[A-Za-z0-9_\/=&~#.:;-]+)';
@@ -55,15 +55,15 @@ class Text_Wiki_Parse_Interwiki extends Text_Wiki_Parse {
         $tmp_regex = '/\[' . $this->regex . ' (.+?)\]/';
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'processDescr'),
+            array(&$this, "processDescr"),
             $this->wiki->source
         );
         
         // standalone interwiki links
-        $tmp_regex = '/' . $this->regex . '/';
+        $tmp_regex = "/" . $this->regex . "/";
         $this->wiki->source = preg_replace_callback(
             $tmp_regex,
-            array(&$this, 'process'),
+            array(&$this, "process"),
             $this->wiki->source
         );
        
@@ -94,9 +94,9 @@ class Text_Wiki_Parse_Interwiki extends Text_Wiki_Parse {
     function process(&$matches)
     {
         $options = array(
-            'site' => $matches[1],
-            'page' => $matches[2],
-            'text' => $matches[0]
+            "site" => $matches[1],
+            "page" => $matches[2],
+            "text" => $matches[0]
         );
         
         return $this->wiki->addToken($this->rule, $options);
@@ -127,9 +127,9 @@ class Text_Wiki_Parse_Interwiki extends Text_Wiki_Parse {
     function processDescr(&$matches)
     {
         $options = array(
-            'site' => $matches[1],
-            'page' => $matches[2],
-            'text' => $matches[3]
+            "site" => $matches[1],
+            "page" => $matches[2],
+            "text" => $matches[3]
         );
         
         return $this->wiki->addToken($this->rule, $options);

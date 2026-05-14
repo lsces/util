@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Tighten.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -29,7 +29,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Tighten extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Tighten extends Text_Wiki_Parse {
     
     
     /**
@@ -42,7 +42,7 @@ class Text_Wiki_Parse_Tighten extends Text_Wiki_Parse {
     
     function parse()
     {
-        $this->wiki->source = str_replace("\n", '',
+        $this->wiki->source = str_replace("\n", "",
             $this->wiki->source);
     }
 }

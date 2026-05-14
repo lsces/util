@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Deflist.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for definition lists.
 * 
-* This class implements a Text_Wiki_Parse to find source text marked as a
+* This class implements a Text_Wiki_Parse_Default to find source text marked as a
 * definition list.  In short, if a line starts with ':' then it is a
 * definition list item; another ':' on the same line indicates the end
 * of the definition term and the beginning of the definition narrative.
@@ -35,7 +35,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Deflist extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Deflist extends Text_Wiki_Parse {
     
     
     /**
@@ -79,20 +79,20 @@ class Text_Wiki_Parse_Deflist extends Text_Wiki_Parse {
     function process(&$matches)
     {
         // the replacement text we will return to parse()
-        $return = '';
+        $return = "";
         
         // the list of post-processing matches
         $list = array();
         
         // start the deflist
-        $options = array('type' => 'list_start');
+        $options = array("type" => "list_start");
         $return .= $this->wiki->addToken($this->rule, $options);
         
         // $matches[1] is the text matched as a list set by parse();
         // create an array called $list that contains a new set of
         // matches for the various definition-list elements.
         preg_match_all(
-            '/^(: )(.*)?( : )(.*)?$/Ums',
+            "/^(: )(.*)?( : )(.*)?$/Ums",
             $matches[1],
             $list,
             PREG_SET_ORDER
@@ -101,22 +101,21 @@ class Text_Wiki_Parse_Deflist extends Text_Wiki_Parse {
         // add each term and narrative
         foreach ($list as $key => $val) {
             $return .= (
-                $this->wiki->addToken($this->rule, array('type' => 'term_start')) .
+                $this->wiki->addToken($this->rule, array("type" => "term_start")) .
                 trim($val[2]) .
-                $this->wiki->addToken($this->rule, array('type' => 'term_end')) .
-                $this->wiki->addToken($this->rule, array('type' => 'narr_start')) .
+                $this->wiki->addToken($this->rule, array("type" => "term_end")) .
+                $this->wiki->addToken($this->rule, array("type" => "narr_start")) .
                 trim($val[4]) . 
-                $this->wiki->addToken($this->rule, array('type' => 'narr_end'))
+                $this->wiki->addToken($this->rule, array("type" => "narr_end"))
             );
         }
         
         
         // end the deflist
-        $options = array('type' => 'list_end');
+        $options = array("type" => "list_end");
         $return .= $this->wiki->addToken($this->rule, $options);
         
         // done!
         return "\n" . $return . "\n\n";
     }
 }
-?>

@@ -458,7 +458,7 @@ class PEAR
      * @see PEAR::setErrorHandling
      * @since PHP 4.0.5
      */
-    public function &raiseError($message = null,
+    static public function &raiseError($message = null,
                          $code = null,
                          $mode = null,
                          $options = null,
@@ -475,7 +475,7 @@ class PEAR
             $message     = $message->getMessage();
         }
 
-        if (
+/*        if (
             isset($this) &&
             isset($this->_expected_errors) &&
             count($this->_expected_errors) > 0 &&
@@ -488,15 +488,16 @@ class PEAR
                 $mode = PEAR_ERROR_RETURN;
             }
         }
-
+*/
         // No mode given, try global ones
         if ($mode === null) {
             // Class error handler
-            if (isset($this) && isset($this->_default_error_mode)) {
-                $mode    = $this->_default_error_mode;
-                $options = $this->_default_error_options;
+//            if (isset($this) && isset($this->_default_error_mode)) {
+//                $mode    = $this->_default_error_mode;
+//                $options = $this->_default_error_options;
             // Global error handler
-            } elseif (isset($GLOBALS['_PEAR_default_error_mode'])) {
+//            } else
+			if (isset($GLOBALS['_PEAR_default_error_mode'])) {
                 $mode    = $GLOBALS['_PEAR_default_error_mode'];
                 $options = $GLOBALS['_PEAR_default_error_options'];
             }
@@ -504,23 +505,20 @@ class PEAR
 
         if ($error_class !== null) {
             $ec = $error_class;
-        } elseif (isset($this) && isset($this->_error_class)) {
-            $ec = $this->_error_class;
+//        } elseif ( isset($this) && isset($this->_error_class) ) {
+//            $ec = $this->_error_class;
         } else {
             $ec = 'PEAR_Error';
         }
 
-        if (intval(PHP_VERSION) < 5) {
+//PHP5 is long gone ...
+/*        if (intval(PHP_VERSION) < 5) {
             // little non-eval hack to fix bug #12147
             include 'PEAR/FixPHP5PEARWarnings.php';
             return $a;
         }
-
-        if ($skipmsg) {
-            $a = new $ec($code, $mode, $options, $userinfo);
-        } else {
-            $a = new $ec($message, $code, $mode, $options, $userinfo);
-        }
+*/
+		$a = ( $skipmsg ) ? new $ec( $code, $mode, $options, $userinfo ) : new $ec( $message, $code, $mode, $options, $userinfo );
 
         return $a;
     }
@@ -725,11 +723,9 @@ function _PEAR_call_destructors()
         sizeof($_PEAR_destructor_object_list))
     {
         reset($_PEAR_destructor_object_list);
-        if (PEAR_ZE2) {
-            $destructLifoExists = PEAR5::getStaticProperty('PEAR', 'destructlifo');
-        } else {
-            $destructLifoExists = PEAR::getStaticProperty('PEAR', 'destructlifo');
-        }
+		$destructLifoExists = ( PEAR_ZE2 ) 
+			? PEAR5::getStaticProperty( 'PEAR', 'destructlifo' )
+			: PEAR::getStaticProperty( 'PEAR', 'destructlifo' );
 
         if ($destructLifoExists) {
             $_PEAR_destructor_object_list = array_reverse($_PEAR_destructor_object_list);
@@ -783,13 +779,14 @@ function _PEAR_call_destructors()
  */
 class PEAR_Error
 {
-    var $error_message_prefix = '';
-    var $mode                 = PEAR_ERROR_RETURN;
-    var $level                = E_USER_NOTICE;
-    var $code                 = -1;
-    var $message              = '';
-    var $userinfo             = '';
-    var $backtrace            = null;
+    public $error_message_prefix = '';
+    public $mode                 = PEAR_ERROR_RETURN;
+    public $level                = E_USER_NOTICE;
+    public $code                 = -1;
+    public $message              = '';
+    public $userinfo             = '';
+    public $backtrace            = null;
+	public $callback;
 
     /**
      * PEAR_Error constructor
@@ -820,11 +817,9 @@ class PEAR_Error
         $this->mode      = $mode;
         $this->userinfo  = $userinfo;
 
-        if (PEAR_ZE2) {
-            $skiptrace = PEAR5::getStaticProperty('PEAR_Error', 'skiptrace');
-        } else {
-            $skiptrace = PEAR::getStaticProperty('PEAR_Error', 'skiptrace');
-        }
+		$skiptrace = ( PEAR_ZE2 ) 
+			? PEAR5::getStaticProperty( 'PEAR_Error', 'skiptrace' ) 
+			: PEAR::getStaticProperty( 'PEAR_Error', 'skiptrace' );
 
         if (!$skiptrace) {
             $this->backtrace = debug_backtrace();
@@ -846,11 +841,7 @@ class PEAR_Error
         }
 
         if ($this->mode & PEAR_ERROR_PRINT) {
-            if (is_null($options) || is_int($options)) {
-                $format = "%s";
-            } else {
-                $format = $options;
-            }
+			$format = ( $options === null || is_int( $options ) ) ? "%s" : $options;
 
             printf($format, $this->getMessage());
         }
@@ -957,7 +948,7 @@ class PEAR_Error
      * Supported with PHP 4.3.0 or newer.
      *
      * @param int $frame (optional) what frame to fetch
-     * @return array Backtrace, or NULL if not available.
+     * @return array|null Backtrace, or NULL if not available.
      */
     public function getBacktrace($frame = null)
     {
@@ -991,19 +982,18 @@ class PEAR_Error
      */
     public function toString()
     {
-        $modes = array();
-        $levels = array(E_USER_NOTICE  => 'notice',
-                        E_USER_WARNING => 'warning',
-                        E_USER_ERROR   => 'error');
+        $modes = [];
+        $levels = [
+			E_USER_NOTICE  => 'notice',
+			E_USER_WARNING => 'warning',
+			E_USER_ERROR   => 'error',
+		];
         if ($this->mode & PEAR_ERROR_CALLBACK) {
-            if (is_array($this->callback)) {
-                $callback = (is_object($this->callback[0]) ?
-                    strtolower(get_class($this->callback[0])) :
-                    $this->callback[0]) . '::' .
-                    $this->callback[1];
-            } else {
-                $callback = $this->callback;
-            }
+			$callback = ( is_array( $this->callback ) ) 
+				? ( is_object( $this->callback[0] )
+					? Strtolower( get_class( $this->callback[0] ) ) 
+					: $this->callback[0] ) . '::' . $this->callback[1] 
+				: $this->callback;
             return sprintf('[%s: message="%s" code=%d mode=callback '.
                            'callback=%s prefix="%s" info="%s"]',
                            strtolower(get_class($this)), $this->message, $this->code,

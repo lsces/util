@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Function.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -28,7 +28,7 @@
 * 
 */
 
-class Text_Wiki_Parse_Function extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Function extends Text_Wiki_Parse {
 
     var $regex = '/^(\<function\>)\n(.+)\n(\<\/function\>)(\s|$)/Umsi';
     
@@ -36,11 +36,11 @@ class Text_Wiki_Parse_Function extends Text_Wiki_Parse {
     {
         // default options
         $opts = array(
-            'name' => null,
-            'access' => null,
-            'return' => null,
-            'params' => array(),
-            'throws' => array()
+            "name" => null,
+            "access" => null,
+            "return" => null,
+            "params" => array(),
+            "throws" => array()
         );
         
         // split apart the markup lines and loop through them
@@ -48,14 +48,14 @@ class Text_Wiki_Parse_Function extends Text_Wiki_Parse {
         foreach ($lines as $line) {
             
             // skip blank lines
-            if (trim($line) == '') {
+            if (trim($line) == "") {
                 continue;
             }
             
             // find the first ':' on the line; the left part is the 
             // type, the right part is the value. skip lines without
             // a ':' on them.
-            $pos = strpos($line, ':');
+            $pos = strpos($line, ":");
             if ($pos === false) {
                 continue;
             }
@@ -68,60 +68,60 @@ class Text_Wiki_Parse_Function extends Text_Wiki_Parse {
             
             switch($type) {
             
-            case 'a':
-            case 'access':
-                $opts['access'] = $val;
+            case "a":
+            case "access":
+                $opts["access"] = $val;
                 break;
                 
-            case 'n':
-            case 'name':
-                $opts['name'] = $val;
+            case "n":
+            case "name":
+                $opts["name"] = $val;
                 break;
                 
-            case 'p':
-            case 'param':
-                $tmp = explode(',', $val);
+            case "p":
+            case "param":
+                $tmp = explode(",", $val);
                 $k = count($tmp);
                 if ($k == 1) {
-                    $opts['params'][] = array(
-                        'type' => $tmp[0],
-                        'descr' => null,
-                        'default' => null
+                    $opts["params"][] = array(
+                        "type" => $tmp[0],
+                        "descr" => null,
+                        "default" => null
                     );
                 } elseif ($k == 2) {
-                    $opts['params'][] = array(
-                        'type' => $tmp[0],
-                        'descr' => $tmp[1],
-                        'default' => null
+                    $opts["params"][] = array(
+                        "type" => $tmp[0],
+                        "descr" => $tmp[1],
+                        "default" => null
                     );
                 } else {
-                    $opts['params'][] = array(
-                        'type' => $tmp[0],
-                        'descr' => $tmp[1],
-                        'default' => $tmp[2]
+                    $opts["params"][] = array(
+                        "type" => $tmp[0],
+                        "descr" => $tmp[1],
+                        "default" => $tmp[2]
                     );
                 }
                 break;
             
-            case 'r':
-            case 'return':
-            case 'returns':
-                $opts['return'] = $val;
+            case "r":
+            case "return":
+            case "returns":
+                $opts["return"] = $val;
                 break;
             
-            case 't':
-            case 'throws':
-                $tmp = explode(',', $val);
+            case "t":
+            case "throws":
+                $tmp = explode(",", $val);
                 $k = count($tmp);
                 if ($k == 1) {
-                    $opts['throws'][] = array(
-                        'type' => $tmp[0],
-                        'descr' => null
+                    $opts["throws"][] = array(
+                        "type" => $tmp[0],
+                        "descr" => null
                     );
                 } else {
-                    $opts['throws'][] = array(
-                        'type' => $tmp[0],
-                        'descr' => $tmp[1]
+                    $opts["throws"][] = array(
+                        "type" => $tmp[0],
+                        "descr" => $tmp[1]
                     );
                 }
                 break;

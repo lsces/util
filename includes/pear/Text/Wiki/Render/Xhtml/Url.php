@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Url.php 236400 2007-05-26 17:15:41Z mic $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,15 +26,15 @@
 class Text_Wiki_Render_Xhtml_Url extends Text_Wiki_Render {
 
 
-    var $conf = array(
-        'target' => '_blank',
-        'images' => true,
-        'img_ext' => array('jpg', 'jpeg', 'gif', 'png'),
-        'css_inline' => null,
-        'css_footnote' => null,
-        'css_descr' => null,
-        'css_img' => null
-    );
+    public $conf = [
+		"target"       => "_blank",
+		"images"       => true,
+		"img_ext"      => [ "jpg", "jpeg", "gif", "png" ],
+		"css_inline"   => null,
+		"css_footnote" => null,
+		"css_descr"    => null,
+		"css_img"      => null,
+	];
 
     /**
     *
@@ -57,75 +57,67 @@ class Text_Wiki_Render_Xhtml_Url extends Text_Wiki_Render {
 
         // find the rightmost dot and determine the filename
         // extension.
-        $pos = strrpos($href, '.');
+        $pos = strrpos($href, ".");
         $ext = strtolower(substr($href, $pos + 1));
         $href = $this->textEncode($href);
 
         // does the filename extension indicate an image file?
-        if ($this->getConf('images') &&
-            in_array($ext, $this->getConf('img_ext', array()))) {
+        if ($this->getConf("images") &&
+            in_array($ext, $this->getConf("img_ext", array()))) {
 
             // create alt text for the image
-            if (! isset($text) || $text == '') {
+            if (! isset($text) || $text == "") {
                 $text = basename($href);
                 $text = $this->textEncode($text);
             }
 
             // generate an image tag
-            $css = $this->formatConf(' class="%s"', 'css_img');
+            $css = $this->formatConf(' class="%s"', "css_img");
             $start = "<img$css src=\"$href\" alt=\"$text\" title=\"$text\" /><!-- ";
             $end = " -->";
 
         } else {
 
             // should we build a target clause?
-            if ($href[0] == '#' ||
-              strtolower(substr($href, 0, 7)) == 'mailto:') {
-              // targets not allowed for on-page anchors
-              // and mailto: links.
-                $target = '';
-            } else {
-        // allow targets on non-anchor non-mailto links
-                $target = $this->getConf('target');
-            }
+			$target = ( $href[0] == "#" ||
+				strtolower( substr( $href, 0, 7 ) ) == "mailto:" ) ? "" : $this->getConf( "target" );
 
-            // generate a regular link (not an image)
-            $text = $this->textEncode($text);
-            $css = $this->formatConf(' class="%s"', "css_$type");
-            $start = "<a$css href=\"$href\"";
+			// generate a regular link (not an image)
+			$text = $this->textEncode( $text );
+			$css = $this->formatConf( ' class="%s"', "css_$type" );
+			$start = "<a$css href=\"$href\"";
 
-            if ($target && $target != '_self') {
-                // use a "popup" window.  this is XHTML compliant, suggested by
-                // Aaron Kalin.  uses the $target as the new window name.
-                $target = $this->textEncode($target);
-                $start .= " onclick=\"window.open(this.href, '$target');";
-                $start .= " return false;\"";
-            }
-            
-            if (isset($name)) {
-                $start .= " id=\"$name\"";
-            }
+			if ($target && $target != "_self") {
+				// use a "popup" window.  this is XHTML compliant, suggested by
+				// Aaron Kalin.  uses the $target as the new window name.
+				$target = $this->textEncode( $target );
+				$start .= " onclick=\"window.open(this.href, '$target');";
+				$start .= " return false;\"";
+			}
 
-            // finish up output
-            $start .= ">";
-            $end = "</a>";
+			if (isset( $name )) {
+				$start .= " id=\"$name\"";
+			}
 
-            // make numbered references look like footnotes when no
-            // CSS class specified, make them superscript by default
-            if ($type == 'footnote' && ! $css) {
-                $start = '<sup>' . $start;
-                $end = $end . '</sup>';
-            }
-        }
+			// finish up output
+			$start .= ">";
+			$end = "</a>";
 
-        if ($options['type'] == 'start') {
-            $output = $start;
-        } else if ($options['type'] == 'end') {
-            $output = $end;
-        } else {
-            $output = $start . $text . $end;
-        }
-        return $output;
-    }
+			// make numbered references look like footnotes when no
+			// CSS class specified, make them superscript by default
+			if ($type == "footnote" && !$css) {
+				$start = "<sup>" . $start;
+				$end = $end . "</sup>";
+			}
+		}
+
+		if ($options["type"] == "start") {
+			$output = $start;
+		}
+		else { $end .= "</sup>"; }
+			$output = ( $options["type"] == "end" ) ? $end : $start . $text . $end;
+
+		return $output;
+	}
+
 }
-?>

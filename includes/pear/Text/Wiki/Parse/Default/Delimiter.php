@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Delimiter.php 180591 2005-02-23 17:38:29Z pmjones $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for Text_Wiki delimiter characters already in the source text.
 * 
-* This class implements a Text_Wiki_Parse to find instances of the delimiter
+* This class implements a Text_Wiki_Parse_Default to find instances of the delimiter
 * character already embedded in the source text; it extracts them and replaces
 * them with a delimited token, then renders them as the delimiter itself
 * when the target format is XHTML.
@@ -33,11 +33,11 @@
 * 
 */
 
-class Text_Wiki_Parse_Delimiter extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Delimiter extends Text_Wiki_Parse {
     
     /**
     * 
-    * Constructor.  Overrides the Text_Wiki_Parse constructor so that we
+    * Constructor.  Overrides the Text_Wiki_Parse_Default constructor so that we
     * can set the $regex property dynamically (we need to include the
     * Text_Wiki $delim character.
     * 
@@ -47,10 +47,27 @@ class Text_Wiki_Parse_Delimiter extends Text_Wiki_Parse {
     * 
     */
     
-    function Text_Wiki_Parse_delimiter(&$obj)
+    function __construct(&$obj)
     {
-        parent::Text_Wiki_Parse($obj);
-        $this->regex = '/' . $this->wiki->delim . '/';
+        parent::__construct($obj);
+        $this->regex = "/" . $this->wiki->delim . "/";
+    }
+
+    /**
+    * 
+    * Constructor.  Overrides the Text_Wiki_Parse_Default constructor so that we
+    * can set the $regex property dynamically (we need to include the
+    * Text_Wiki $delim character.
+    * 
+    * @param object &$obj The calling "parent" Text_Wiki object.
+    * 
+    * @param string $name The token name to use for this rule.
+    * 
+    */
+    
+    function Text_Wiki_Parse_Default_Delimiter(&$obj)
+    {
+        self::__construct($obj);
     }
     
     
@@ -73,8 +90,7 @@ class Text_Wiki_Parse_Delimiter extends Text_Wiki_Parse {
     {    
         return $this->wiki->addToken(
             $this->rule,
-            array('text' => $this->wiki->delim)
+            array("text" => $this->wiki->delim)
         );
     }
 }
-?>

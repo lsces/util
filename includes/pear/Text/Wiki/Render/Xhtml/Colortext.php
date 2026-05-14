@@ -9,7 +9,7 @@
  * @package    Text_Wiki
  * @author     Paul M. Jones <pmjones@php.net>
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Colortext.php 191862 2005-07-30 08:03:29Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -26,22 +26,22 @@
 class Text_Wiki_Render_Xhtml_Colortext extends Text_Wiki_Render {
 
     var $colors = array(
-        'aqua',
-        'black',
-        'blue',
-        'fuchsia',
-        'gray',
-        'green',
-        'lime',
-        'maroon',
-        'navy',
-        'olive',
-        'purple',
-        'red',
-        'silver',
-        'teal',
-        'white',
-        'yellow'
+        "aqua",
+        "black",
+        "blue",
+        "fuchsia",
+        "gray",
+        "green",
+        "lime",
+        "maroon",
+        "navy",
+        "olive",
+        "purple",
+        "red",
+        "silver",
+        "teal",
+        "white",
+        "yellow"
     );
 
 
@@ -60,20 +60,19 @@ class Text_Wiki_Render_Xhtml_Colortext extends Text_Wiki_Render {
 
     function token($options)
     {
-        $type = $options['type'];
-        $color = $options['color'];
+        $type = $options["type"];
+        $color = $options["color"];
 
-        if (! in_array($color, $this->colors) && $color[0] != '#') {
-            $color = '#' . $color;
+        if (! in_array($color, $this->colors) && $color[0] != "#") {
+            $color = "#" . $color;
         }
 
-        if ($type == 'start') {
+        if ($type == "start") {
             return "<span style=\"color: $color;\">";
         }
 
-        if ($options['type'] == 'end') {
-            return '</span>';
+        if ($options["type"] == "end") {
+            return "</span>";
         }
     }
 }
-?>

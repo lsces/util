@@ -12,7 +12,7 @@
 * 
 * @license LGPL
 * 
-* @version $Id: Freelink.php 224598 2006-12-08 08:23:51Z justinpatrin $
+* @version $Id$
 * 
 */
 
@@ -20,7 +20,7 @@
 * 
 * Parses for freelinked page links.
 * 
-* This class implements a Text_Wiki_Parse to find source text marked as a
+* This class implements a Text_Wiki_Parse_Default to find source text marked as a
 * wiki freelink, and automatically create a link to that page.
 * 
 * A freelink is any page name not conforming to the standard
@@ -39,15 +39,15 @@
 * 
 */
 
-class Text_Wiki_Parse_Freelink extends Text_Wiki_Parse {
+class Text_Wiki_Parse_Default_Freelink extends Text_Wiki_Parse {
     
     var $conf = array (
-                       'utf-8' => false
+                       "utf-8" => false
     );
     
     /**
     * 
-    * Constructor.  We override the Text_Wiki_Parse constructor so we can
+    * Constructor.  We override the Text_Wiki_Parse_Default constructor so we can
     * explicitly comment each part of the $regex property.
     * 
     * @access public
@@ -56,16 +56,16 @@ class Text_Wiki_Parse_Freelink extends Text_Wiki_Parse {
     * 
     */
     
-    function Text_Wiki_Parse_Freelink(&$obj)
+    function __construct(&$obj)
     {
-        parent::Text_Wiki_Parse($obj);
-        if ($this->getConf('utf-8')) {
+        parent::__construct($obj);
+        if ($this->getConf("utf-8")) {
             $any = '\p{L}';
         } else {
-            $any = '';
+            $any = "";
         }
         $this->regex =
-            '/' .                                                   // START regex
+            "/" .                                                   // START regex
             "\\(\\(" .                                               // double open-parens
             "(" .                                                   // START freelink page patter
             "[-A-Za-z0-9 _+\\/.,;:!?'\"\\[\\]\\{\\}&".$any."\xc0-\xff]+" . // 1 or more of just about any character
@@ -80,7 +80,23 @@ class Text_Wiki_Parse_Freelink extends Text_Wiki_Parse {
             "[-A-Za-z0-9_:.]*" .                                   // 0 or more alpha, digit, underscore
             ")?" .                                                   // END named anchors pattern 0 or 1
             "()\\)\\)" .                                           // double close-parens
-            '/'.($this->getConf('utf-8') ? 'u' : '');              // END regex
+            "/".($this->getConf("utf-8") ? "u" : "");              // END regex
+    }
+
+    /**
+    * 
+    * Constructor.  We override the Text_Wiki_Parse_Default constructor so we can
+    * explicitly comment each part of the $regex property.
+    * 
+    * @access public
+    * 
+    * @param object &$obj The calling "parent" Text_Wiki object.
+    * 
+    */
+    
+    function Text_Wiki_Parse_Default_Freelink(&$obj)
+    {
+        self::__construct($obj);
     }
     
     
@@ -112,7 +128,7 @@ class Text_Wiki_Parse_Freelink extends Text_Wiki_Parse {
         $anchor = $matches[3];
         
         // is the page given a new text appearance?
-        if (trim($text) == '') {
+        if (trim($text) == "") {
             // no
             $text = $page;
         } else {
@@ -122,9 +138,9 @@ class Text_Wiki_Parse_Freelink extends Text_Wiki_Parse {
         
         // set the options
         $options = array(
-            'page'   => $page,
-            'text'   => $text,
-            'anchor' => $anchor
+            "page"   => $page,
+            "text"   => $text,
+            "anchor" => $anchor
         );
         
         // return a token placeholder

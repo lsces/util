@@ -10,7 +10,7 @@
  * @author     Bertrand Gugger <bertrand@toggg.com>
  * @copyright  2005 bertrand Gugger
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Smiley.php 206940 2006-02-10 23:07:03Z toggg $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/Text_Wiki
  */
 
@@ -43,9 +43,9 @@ class Text_Wiki_Render_Xhtml_Smiley extends Text_Wiki_Render {
      * @var array 'config-key' => mixed config-value
      */
     var $conf = array(
-        'prefix' => 'images/smiles/icon_',
-        'extension' => '.gif',
-        'css' => null
+        "prefix" => "images/smiles/icon_",
+        "extension" => ".gif",
+        "css" => null
     );
 
     /**
@@ -58,7 +58,7 @@ class Text_Wiki_Render_Xhtml_Smiley extends Text_Wiki_Render {
       */
     function token($options)
     {
-        $imageFile = $this->getConf('prefix') . $options['name'] . $this->getConf('extension');
+        $imageFile = $this->getConf("prefix") . $options["name"] . $this->getConf("extension");
 
         // attempt to get the image size
         $imageSize = @getimagesize($imageFile);
@@ -66,9 +66,9 @@ class Text_Wiki_Render_Xhtml_Smiley extends Text_Wiki_Render {
         // return the HTML output
         return '<img src="' . $this->textEncode($imageFile) . '"' .
             (is_array($imageSize) ?
-                ' width="' . $imageSize[0] . '" height="' . $imageSize[1] .'"' : '') .
-            ' alt="' . $options['desc'] . '"' .
-            $this->formatConf(' class="%s"', 'css') . ' />';
+                ' width="' . $imageSize[0] . '" height="' . $imageSize[1] .'"' : "") .
+            ' alt="' . $options["desc"] . '"' .
+            $this->formatConf(' class="%s"', "css") . " />";
     }
 }
 ?>
