@@ -17,6 +17,7 @@
 /**
  * required setup
  */
+use Bitweaver\KernelTools;
 define("USE_ASSERTS", function_exists("assert"));
 /**
  * Class used internally by WikiDiff to actually compute the diffs.
@@ -1015,7 +1016,7 @@ if ($diff)
 		$page2 = split("\n", $page2);
 		$z = new WikiDiff($page1, $page2);
 		if ($z->isEmpty()) {
-			$html = "<hr><br />[" . tra("Versions are identical"). "]<br /><br />";
+			$html = "<hr><br />[" . KernelTools::tra("Versions are identical"). "]<br /><br />";
 		} else {
 			//$fmt = new WikiDiffFormatter;
 			$fmt = new WikiUnifiedDiffFormatter;
