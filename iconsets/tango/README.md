@@ -25,5 +25,5 @@ Regenerate (overwrites the seventeen files; needs python3 and lxml):
         bwfm-tutorial=application-vnd.ms-powerpoint.presentation.macroEnabled.12 \
         bwfm-author=dashboard-show+cs-user bwfm-series=dashboard-show+cs-user-accounts
 
-To add another set, pass more `name=base` pairs; `name=base+badge` uses another icon as the corner badge (scaled to 62%). The base is scaled to 84% and pinned top-left; the
+To add another set, pass more `name=base` pairs; `name=base+badge` uses another icon as the corner badge (scaled to 80%). The base is scaled to 84% and pinned top-left; the
 badge is 80% size, bottom-right. The badges are drawn in `make_icons.py` (`BADGES`).

@@ -16,7 +16,7 @@ from lxml import etree
 SVG = 'http://www.w3.org/2000/svg'
 XLINK = 'http://www.w3.org/1999/xlink'
 SCALE = 0.84
-BADGE_ICON_SCALE = 0.62
+BADGE_ICON_SCALE = 0.8
 
 BADGES = {
     'add': '''
