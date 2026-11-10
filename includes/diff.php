@@ -43,6 +43,9 @@ class _WikiDiffEngine
   public $edits = [];	// List of editing operation to convert XV to YV.
   public $xv = [], $yv = [];
   public $xchanged = [], $ychanged = [];
+  public $xind = [], $yind = [];	// Line numbers of the lines that are not skipped as common head or tail.
+  public $seq = [], $in_seq = [];	// Working arrays of the longest-common-subsequence search.
+  public $lcs = 0;	// Length of the longest common subsequence found.
   function __construct ($from_lines, $to_lines) {
 	$n_from = sizeof($from_lines);
 	$n_to = sizeof($to_lines);
